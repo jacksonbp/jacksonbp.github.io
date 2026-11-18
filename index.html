@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Voz das Cidades</title>
+  <meta name="description" content="Transparência das Câmaras Municipais: acompanhe o que os vereadores propõem, como votam e o que os bairros pedem. Escolha sua cidade.">
+  <link rel="canonical" href="https://vozdascidades.com.br/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Voz das Cidades">
+  <meta property="og:description" content="Acompanhe vereadores, propostas e demandas dos bairros da sua cidade, com dados oficiais.">
+  <meta property="og:url" content="https://vozdascidades.com.br/">
+  <meta property="og:site_name" content="Voz das Cidades">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="https://vozdascidades.com.br/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Voz das Cidades: O que acontece na Câmara da sua cidade, às claras. Mapa com Bragança Paulista (no ar) e Serra Negra (em breve).">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Voz das Cidades">
+  <meta name="twitter:description" content="Acompanhe vereadores, propostas e demandas dos bairros da sua cidade, com dados oficiais.">
+  <meta name="twitter:image" content="https://vozdascidades.com.br/og.png">
+  <meta name="twitter:image:alt" content="Voz das Cidades: O que acontece na Câmara da sua cidade, às claras. Mapa com Bragança Paulista (no ar) e Serra Negra (em breve).">
+  <link rel="image_src" href="https://vozdascidades.com.br/og.png">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1218" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Epath%7Bstroke:%230f1720%7D@media (prefers-color-scheme:dark)%7Bpath%7Bstroke:%23ffffff%7D%7D%3C/style%3E%3Ccircle cx='16' cy='16' r='5' fill='%23e5322d'/%3E%3Cpath d='M8 8a11 11 0 000 16M24 8a11 11 0 010 16' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #ffffff;
+      --soft: #f4f6f8;
+      --card: #ffffff;
+      --ink: #111a24;
+      --mute: #5d6976;
+      --hair: #e4e8ec;
+      --red: #e5322d;
+      --red-ink: #c4231f;
+      --ok: #0b8758;
+      --ok-t: #e3f6ee;
+      --hero: #111a24;
+      --hero-mute: #aeb8c4;
+      --shadow: 0 1px 2px rgba(17,26,36,.05), 0 14px 32px -18px rgba(17,26,36,.25);
+      --display: "Archivo", "Inter", system-ui, sans-serif;
+      --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --paper: #0d1218; --soft: #151c24; --card: #151c24; --ink: #eef2f6; --mute: #9aa6b3;
+        --hair: #26303b; --red-ink: #ff6b66; --ok: #4fd39c; --ok-t: #12301f; --hero: #151c24;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 14px 32px -18px rgba(0,0,0,.6);
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #0d1218; --soft: #151c24; --card: #151c24; --ink: #eef2f6; --mute: #9aa6b3;
+      --hair: #26303b; --red-ink: #ff6b66; --ok: #4fd39c; --ok-t: #12301f; --hero: #151c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 14px 32px -18px rgba(0,0,0,.6);
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 var(--body); }
+    a { color: inherit; }
+    :focus-visible { outline: 2.5px solid var(--red); outline-offset: 3px; border-radius: 8px; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+    .eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
+
+    /* topo (fica preso no alto ao rolar) */
+    .topbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: color-mix(in srgb, var(--paper) 86%, transparent);
+      -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px);
+      border-bottom: 1px solid transparent; transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .topbar.rolou { border-bottom-color: var(--hair); box-shadow: 0 8px 24px -20px rgba(17,26,36,.45); }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 900 20px/1 var(--display); letter-spacing: -.02em; }
+    .brand svg { width: 34px; height: 34px; flex: none; }
+    .brand span { color: var(--red); }
+    .brand b { white-space: nowrap; }
+    .top nav { display: flex; align-items: center; gap: 4px; }
+    .top nav a.lk { font-size: 14px; font-weight: 600; color: var(--mute); text-decoration: none; padding: 8px 11px; border-radius: 10px; }
+    .top nav a.lk:hover { color: var(--ink); background: var(--soft); }
+    .top nav a.ig { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; color: var(--mute); }
+    .top nav a.ig:hover { color: var(--ink); background: var(--soft); }
+    .top nav a.ig svg { width: 20px; height: 20px; }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px; margin-left: 10px; white-space: nowrap;
+      background: var(--ink); color: var(--paper); text-decoration: none; font-size: 14px; font-weight: 700;
+      padding: 9px 16px; border-radius: 999px; transition: background .15s ease, color .15s ease;
+    }
+    .nav-cta:hover { background: var(--red); color: #fff; }
+    .nav-cta i { width: 7px; height: 7px; border-radius: 50%; background: #22c38a; flex: none; }
+    main { padding-top: 4px; }
+
+    /* destaque */
+    .hero {
+      position: relative; overflow: hidden; isolation: isolate;
+      background: var(--hero); color: #fff; border-radius: 28px;
+      padding: clamp(28px, 6vw, 72px);
+    }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: center; }
+
+    /* mapa */
+    .map-box { position: relative; height: 100%; min-height: 440px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,.08); background: radial-gradient(120% 90% at 70% 60%, #172231 0%, #0c121a 100%); }
+    #mapa { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    #mapa .uf { fill: #1d2836; stroke: #3a4757; stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+    #mapa .uf-sp { fill: rgba(229,50,45,.22); stroke: #ff5a55; stroke-width: 1.6; transition: fill .9s ease, stroke .9s ease; }
+    #mapa.perto .uf-sp { fill: #1a2533; stroke: rgba(255,90,85,.5); }
+    #mapa .grade { stroke: rgba(255,255,255,.05); stroke-width: 1; vector-effect: non-scaling-stroke; fill: none; }
+    #mapa .mun { stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+    #mapa .mun-bp { fill: rgba(229,50,45,.6); stroke: #ff8f8b; }
+    #mapa .mun-sn { fill: rgba(174,184,196,.3); stroke: #c9d1da; }
+    #pins { position: absolute; inset: 0; pointer-events: none; }
+    .ponto { position: absolute; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s ease; }
+    .ponto.vis { opacity: 1; }
+    .ponto .pin { margin: 0 auto; }
+    .ponto .rot {
+      position: absolute; top: 50%; transform: translateY(-50%); white-space: nowrap;
+      background: #fff; color: #111a24; border-radius: 10px; padding: 6px 10px;
+      font: 700 13px/1.2 var(--body); box-shadow: 0 8px 22px -8px rgba(0,0,0,.6);
+    }
+    .ponto .rot small { display: block; font-weight: 600; font-size: 11px; color: #5d6976; }
+    .ponto.on .rot small { color: #0b8758; }
+    .ponto.dir .rot { left: 18px; }
+    .ponto.esq .rot { right: 18px; }
+    .ponto.cap .rot { background: transparent; color: #aeb8c4; box-shadow: none; font-weight: 600; font-size: 12px; padding: 0; }
+    .ponto.cap .dot { width: 7px; height: 7px; border-radius: 50%; background: #aeb8c4; }
+    a.ponto.on { pointer-events: auto; text-decoration: none; }
+    .ponto.estado .rot { position: static; transform: none; background: none; box-shadow: none; padding: 0; color: rgba(255,255,255,.38); font: 700 11px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; }
+    .map-cap {
+      position: absolute; z-index: 500; left: 12px; bottom: 12px; right: 12px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; pointer-events: none;
+    }
+    .map-cap span { background: rgba(17,26,36,.82); backdrop-filter: blur(6px); color: #d5dbe2; font-size: 12.5px; font-weight: 600; padding: 6px 11px; border-radius: 999px; }
+    .map-cap button {
+      pointer-events: auto; border: 1px solid rgba(255,255,255,.18); background: rgba(17,26,36,.82); color: #fff;
+      font-size: 12.5px; font-weight: 600; padding: 6px 11px; border-radius: 999px; backdrop-filter: blur(6px);
+    }
+    .map-cap button:hover { border-color: #ff8f8b; }
+    .map-leg {
+      position: absolute; z-index: 500; top: 12px; left: 12px; display: flex; align-items: center; gap: 12px;
+      background: rgba(17,26,36,.82); backdrop-filter: blur(6px); color: #d5dbe2; font-size: 12px; font-weight: 600;
+      padding: 6px 11px; border-radius: 999px; opacity: 0; transition: opacity .5s ease; pointer-events: none;
+    }
+    .map-leg.vis { opacity: 1; }
+    .map-leg span { display: inline-flex; align-items: center; gap: 6px; }
+    .map-leg i { width: 9px; height: 9px; border-radius: 50%; background: var(--red); border: 1.5px solid #fff; }
+    .map-leg i.soon { background: #aeb8c4; }
+    .pin { position: relative; width: 16px; height: 16px; }
+    .pin i { position: absolute; inset: 0; border-radius: 50%; background: var(--red); border: 2.5px solid #fff; animation: pulse 2.2s infinite; }
+    .pin.soon i { background: #aeb8c4; animation: none; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(229,50,45,.6); } 70% { box-shadow: 0 0 0 16px rgba(229,50,45,0); } 100% { box-shadow: 0 0 0 0 rgba(229,50,45,0); } }
+    @media (prefers-reduced-motion: reduce) { .pin i { animation: none; } html { scroll-behavior: auto; } }
+    .hero .eyebrow { color: #ff8f8b; }
+    .hero h1 {
+      margin: 14px 0 0; max-width: 15ch;
+      font: 900 clamp(34px, 4.8vw, 56px)/1.02 var(--display); letter-spacing: -.035em; text-wrap: balance;
+    }
+    .hero h1 em { font-style: normal; color: #ff5a55; }
+    .hero .lead { margin: 18px 0 0; max-width: 46ch; color: var(--hero-mute); font-size: clamp(16px, 2vw, 19px); }
+    .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
+    .cta-sec {
+      display: inline-flex; align-items: center; min-height: 48px; padding: 14px 20px; border-radius: 999px;
+      color: #fff; text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,.22);
+      transition: border-color .15s ease, background .15s ease;
+    }
+    .cta-sec:hover { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.05); }
+    .cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--red); color: #fff; text-decoration: none; font-weight: 700;
+      padding: 14px 22px; border-radius: 999px; min-height: 48px;
+    }
+    .cta:hover { background: #cc2925; }
+    .trust { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 28px 0 0; padding: 0; list-style: none; color: #d5dbe2; font-size: 14px; }
+    .trust li { display: inline-flex; align-items: center; gap: 8px; }
+    .trust svg { width: 16px; height: 16px; flex: none; color: #ff8f8b; }
+
+    /* fontes dos dados */
+    .fontes {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 16px;
+      padding: 16px clamp(20px, 3vw, 28px); border: 1px solid var(--hair); border-radius: 18px; background: var(--soft);
+    }
+    .fontes ul { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; padding: 0; list-style: none; }
+    .fontes li { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+    .fontes svg { width: 18px; height: 18px; flex: none; color: var(--mute); }
+
+    /* cidades */
+    section.block { padding-top: clamp(48px, 7vw, 80px); scroll-margin-top: 76px; }
+    h2 { margin: 6px 0 8px; font: 900 clamp(26px, 4.5vw, 38px)/1.08 var(--display); letter-spacing: -.02em; }
+    .sub { margin: 0 0 22px; color: var(--mute); max-width: 60ch; }
+    .cities { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; margin: 0; padding: 0; list-style: none; }
+    .city {
+      display: flex; flex-direction: column; height: 100%;
+      background: var(--card); border: 1px solid var(--hair); border-radius: 22px;
+      padding: clamp(20px, 3vw, 30px); text-decoration: none; color: var(--ink);
+      box-shadow: var(--shadow); transition: transform .15s ease, border-color .15s ease;
+    }
+    a.city:hover { transform: translateY(-2px); border-color: var(--red); }
+    .city-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; padding: 5px 11px; border-radius: 999px; white-space: nowrap; }
+    .badge.on { background: var(--ok-t); color: var(--ok); }
+    .badge.on i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .badge.soon { background: var(--paper); color: var(--mute); border: 1px solid var(--hair); }
+    .city-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; }
+    .city h3 { margin: 0 0 2px; font: 900 clamp(24px, 3.4vw, 32px)/1.1 var(--display); letter-spacing: -.02em; }
+    .shape { width: 72px; height: 72px; flex: none; }
+    .shape svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .shape path { stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+    .shape.bp path { fill: rgba(229,50,45,.14); stroke: var(--red); }
+    .shape.sn path { fill: rgba(93,105,118,.10); stroke: var(--mute); stroke-dasharray: 3 3; }
+    .stats { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--mute); }
+    .stats[hidden] { display: none; }
+    .stats b { color: var(--ink); font: 900 19px/1 var(--display); letter-spacing: -.01em; margin-right: 4px; }
+    .city .uf { margin: 0; color: var(--mute); font-size: 14px; }
+    .city p.desc { margin: 12px 0 0; color: var(--mute); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+    .tags li { font-size: 13px; font-weight: 600; background: var(--soft); border: 1px solid var(--hair); border-radius: 999px; padding: 5px 11px; }
+    .go { margin-top: auto; padding-top: 22px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--red-ink); }
+    .go span { transition: transform .15s ease; }
+    a.city:hover .go span { transform: translateX(3px); }
+    .city.muted { background: var(--soft); box-shadow: none; border: 1.5px dashed color-mix(in srgb, var(--mute) 40%, transparent); }
+    .city.muted .go { color: var(--mute); }
+
+    /* como funciona */
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 24px; margin: 0; padding: 0; list-style: none; counter-reset: s; }
+    .steps li { border-top: 3px solid var(--ink); padding-top: 16px; }
+    .steps li::before { counter-increment: s; content: "0" counter(s); display: block; font: 900 14px/1 var(--display); color: var(--red); letter-spacing: .05em; }
+    .steps h3 { margin: 10px 0 6px; font: 700 19px/1.25 var(--display); }
+    .steps p { margin: 0; color: var(--mute); font-size: 15px; }
+
+    /* compromissos */
+    .principios { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+    .principios li { background: var(--card); border: 1px solid var(--hair); border-radius: 18px; padding: 22px; }
+    .principios .ic { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--red) 11%, transparent); color: var(--red-ink); }
+    .principios .ic svg { width: 21px; height: 21px; }
+    .principios h3 { margin: 14px 0 6px; font: 700 17px/1.25 var(--display); }
+    .principios p { margin: 0; color: var(--mute); font-size: 14.5px; }
+
+    /* convite: Radar na sua cidade */
+    .convite {
+      position: relative; overflow: hidden; isolation: isolate; scroll-margin-top: 76px;
+      margin-top: clamp(48px, 7vw, 80px); background: var(--hero); color: #fff; border-radius: 28px;
+      padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: center;
+    }
+    .convite::after {
+      content: ""; position: absolute; z-index: -1; right: -90px; top: -90px; width: 300px; height: 300px; border-radius: 50%;
+      border: 2px solid rgba(229,50,45,.3); box-shadow: 0 0 0 46px rgba(229,50,45,.07), 0 0 0 92px rgba(229,50,45,.04); pointer-events: none;
+    }
+    .convite .eyebrow { color: #ff8f8b; }
+    .convite h2 { margin: 8px 0 10px; color: #fff; }
+    .convite .txt { margin: 0; max-width: 54ch; color: var(--hero-mute); font-size: clamp(16px, 1.8vw, 18px); }
+    .btn-ig {
+      display: inline-flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 24px 12px 18px; border-radius: 999px;
+      background: #fff; color: #111a24; text-decoration: none; font-weight: 700; line-height: 1.2; transition: background .15s ease, transform .15s ease;
+    }
+    .btn-ig:hover { background: #ffe9e8; transform: translateY(-1px); }
+    .btn-ig svg { width: 26px; height: 26px; flex: none; color: var(--red); }
+    .btn-ig small { display: block; font-size: 13px; font-weight: 600; color: #5d6976; }
+
+    /* rodapé */
+    footer { margin-top: clamp(56px, 8vw, 96px); border-top: 1px solid var(--hair); background: var(--soft); padding-block: 44px 28px; color: var(--mute); font-size: 14px; }
+    .foot { display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr)); gap: 28px 32px; }
+    .foot .brand { font-size: 18px; color: var(--ink); }
+    .foot .brand svg { width: 30px; height: 30px; }
+    .foot p { margin: 14px 0 0; max-width: 38ch; }
+    .foot h2 { margin: 4px 0 12px; font: 700 12px/1.2 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+    .foot ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+    .foot a { text-decoration: none; }
+    .foot a:hover { color: var(--ink); text-decoration: underline; }
+    .foot .ig-foot { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-weight: 600; color: var(--ink); }
+    .foot .ig-foot svg { width: 18px; height: 18px; color: var(--red-ink); }
+    .foot .tag { white-space: nowrap; font-size: 11px; font-weight: 700; border: 1px solid var(--hair); border-radius: 999px; padding: 1px 7px; margin-left: 6px; }
+    .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--hair); font-size: 13px; }
+
+    @media (max-width: 960px) {
+      .principios { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .foot { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .foot > div:first-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 760px) {
+      .top nav a.lk, .top nav a.ig, .nav-cta .longo { display: none; }
+      .convite { grid-template-columns: minmax(0, 1fr); border-radius: 22px; }
+      .btn-ig { justify-self: start; }
+      .brand { font-size: 18px; }
+      .brand svg { width: 30px; height: 30px; }
+      .top { gap: 10px; }
+      .nav-cta { margin-left: 0; gap: 7px; font-size: 13px; padding: 8px 12px; }
+      .hero { border-radius: 22px; grid-template-columns: minmax(0, 1fr); }
+      .map-box { min-height: 320px; }
+      .cities, .steps, .principios { grid-template-columns: minmax(0, 1fr); }
+      .foot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 350px) {
+      .nav-cta i { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="top wrap">
+      <a class="brand" href="/" aria-label="Voz das Cidades, página inicial">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="5" fill="#e5322d"/><path d="M8 8a11 11 0 000 16M24 8a11 11 0 010 16" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+        <b>Voz das <span>Cidades</span></b>
+      </a>
+      <nav aria-label="Seções">
+        <a class="lk" href="#cidades">Cidades</a>
+        <a class="lk" href="#como-funciona">Como funciona</a>
+        <a class="lk" href="#compromissos">Compromissos</a>
+        <a class="ig" href="https://www.instagram.com/vozdascidadesoficial/" data-goatcounter-click="instagram-topo" data-goatcounter-title="Instagram: topo" target="_blank" rel="noopener" aria-label="Instagram do projeto (@vozdascidadesoficial)" title="Instagram @vozdascidadesoficial"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg></a>
+        <a class="nav-cta" href="/braganca/" data-goatcounter-click="cidade-braganca-topo" data-goatcounter-title="Bragança: botão do topo"><i aria-hidden="true"></i><span><span class="longo">Abrir </span>Radar Bragança</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" aria-labelledby="titulo">
+      <div>
+      <p class="eyebrow">Transparência nas Câmaras Municipais</p>
+      <h1 id="titulo">O que acontece na Câmara da sua cidade, <em>às claras.</em></h1>
+      <p class="lead">Veja o que cada vereador propõe, como vota e o que os bairros estão pedindo, tudo em linguagem simples e a partir de dados oficiais.</p>
+      <div class="cta-row">
+        <a class="cta" href="#cidades">Escolher minha cidade <span aria-hidden="true">↓</span></a>
+        <a class="cta-sec" href="#como-funciona">Como funciona</a>
+      </div>
+      <ul class="trust">
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Dados oficiais e públicos</li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Atualizado todos os dias</li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Independente e apartidário</li>
+      </ul>
+      </div>
+      <div class="map-box">
+        <svg id="mapa" role="img" aria-label="Mapa do Brasil aproximando até Bragança Paulista e Serra Negra, no interior de São Paulo" preserveAspectRatio="xMidYMid meet"><path class="grade" d="M48 -100V4200M241 -100V4200M435 -100V4200M628 -100V4200M821 -100V4200M1014 -100V4200M1207 -100V4200M1401 -100V4200M1594 -100V4200M1787 -100V4200M1980 -100V4200M2173 -100V4200M2367 -100V4200M2560 -100V4200M2753 -100V4200M2946 -100V4200M3139 -100V4200M3332 -100V4200M3526 -100V4200M3719 -100V4200M3912 -100V4200M-100 -40H4100M-100 160H4100M-100 360H4100M-100 560H4100M-100 760H4100M-100 960H4100M-100 1160H4100M-100 1360H4100M-100 1560H4100M-100 1760H4100M-100 1960H4100M-100 2160H4100M-100 2360H4100M-100 2560H4100M-100 2760H4100M-100 2960H4100M-100 3160H4100M-100 3360H4100M-100 3560H4100M-100 3760H4100M-100 3960H4100"/><g id="ufs"><path class="uf" d="M86 1280L178 1322L399 1374L558 1460L761 1549L760 1554L737 1568L720 1588L707 1594L693 1592L694 1597L691 1599L685 1597L682 1605L668 1610L659 1620L656 1631L640 1624L623 1627L605 1656L590 1665L581 1665L575 1671L559 1674L555 1660L532 1661L524 1657L490 1653L460 1657L454 1653L441 1652L419 1664L405 1667L392 1664L383 1653L375 1660L375 1542L383 1536L384 1531L377 1516L381 1517L379 1513L386 1511L383 1507L387 1503L377 1504L341 1535L338 1541L322 1548L318 1557L302 1560L224 1560L227 1540L215 1535L217 1521L207 1509L192 1508L172 1501L124 1501L137 1484L144 1481L143 1478L150 1471L151 1459L142 1451L132 1431L117 1421L118 1407L107 1407L105 1401L93 1395L84 1362L70 1351L72 1346L77 1347L79 1338L65 1332L49 1315L56 1307L52 1295L61 1298L77 1291L67 1271L86 1280Z"/><path class="uf" d="M3770 1443L3798 1449L3798 1458L3786 1479L3750 1520L3748 1526L3737 1533L3714 1568L3693 1587L3681 1610L3675 1601L3664 1602L3664 1592L3659 1586L3649 1586L3631 1574L3623 1558L3617 1559L3607 1550L3599 1549L3582 1536L3566 1533L3554 1523L3546 1524L3518 1504L3506 1502L3503 1493L3517 1477L3528 1475L3541 1458L3542 1449L3549 1446L3555 1459L3560 1462L3566 1457L3575 1457L3577 1463L3592 1469L3600 1484L3603 1482L3606 1488L3612 1484L3627 1498L3635 1487L3652 1487L3660 1494L3677 1481L3697 1477L3693 1470L3707 1463L3707 1456L3713 1451L3739 1445L3743 1452L3764 1442L3770 1443Z"/><path class="uf" d="M693 357L698 372L709 375L715 387L716 443L738 437L790 484L813 484L814 479L825 479L833 467L846 460L861 459L870 472L861 488L865 495L877 489L878 478L886 467L900 468L903 447L908 444L916 448L921 437L930 437L936 429L942 437L976 407L981 410L976 420L982 424L985 413L1005 398L1008 367L1015 362L1029 364L1043 355L1046 358L1051 349L1070 347L1075 339L1084 345L1097 343L1101 352L1109 359L1126 358L1139 366L1138 389L1130 401L1146 417L1155 448L1162 451L1164 462L1161 473L1163 481L1156 491L1156 509L1164 522L1162 532L1166 551L1174 557L1177 570L1184 577L1183 590L1189 593L1178 611L1179 625L1168 633L1160 628L1158 636L1204 672L1217 700L1228 698L1243 703L1258 718L1252 703L1244 699L1248 695L1243 690L1251 666L1248 654L1252 636L1259 626L1282 616L1283 610L1312 616L1313 622L1327 636L1328 646L1336 649L1344 645L1349 647L1354 637L1371 632L1370 624L1364 619L1362 611L1373 589L1372 581L1379 574L1381 563L1387 557L1389 547L1395 544L1397 534L1507 534L1510 594L1523 603L1526 628L1552 648L1552 663L1563 674L1569 673L1578 683L1586 673L1592 671L1597 676L1594 693L1598 700L1611 704L1615 711L1622 710L1625 719L1632 717L1639 725L1651 728L1652 732L1666 730L1674 732L1675 737L1684 741L1687 751L1692 751L1704 762L1716 762L1713 777L1721 781L1728 781L1736 774L1747 778L1765 766L1777 763L1766 780L1750 787L1742 802L1748 806L1568 1207L1548 1230L1552 1251L1574 1273L1581 1296L1573 1306L1574 1322L1557 1344L1566 1373L1563 1377L1563 1392L1554 1409L1556 1420L1552 1430L1562 1432L1556 1438L1248 1440L1243 1432L1235 1429L1229 1435L1223 1433L1221 1445L1209 1448L1204 1440L1195 1440L1188 1424L1189 1419L1181 1418L1180 1424L1175 1421L1172 1399L1162 1394L1157 1398L1153 1388L1141 1377L1141 1369L1126 1359L1051 1357L1036 1392L1027 1389L1020 1393L1016 1402L1020 1405L1017 1409L1022 1418L1019 1421L1016 1419L1012 1432L1002 1432L1000 1456L984 1460L983 1453L955 1462L933 1459L926 1464L924 1486L908 1503L900 1503L898 1489L894 1486L880 1494L874 1492L876 1507L860 1501L852 1505L848 1516L841 1519L824 1501L791 1504L782 1501L783 1510L773 1523L746 1535L743 1541L558 1460L399 1374L178 1322L67 1271L75 1262L72 1253L83 1236L110 1219L124 1218L132 1210L134 1201L121 1174L122 1163L127 1160L130 1147L149 1125L149 1106L158 1087L156 1077L163 1071L181 1065L183 1059L204 1047L206 1041L229 1032L238 1022L247 1020L253 1012L265 1010L266 1007L275 1011L278 1007L280 1013L286 1007L290 1009L289 1005L298 1007L304 1003L308 1006L307 1002L312 1003L312 998L316 1001L318 998L319 1003L323 998L327 1001L328 998L338 998L338 995L344 999L357 978L361 976L369 980L372 973L374 979L382 974L386 980L392 973L402 979L403 975L407 978L406 989L410 988L409 991L414 992L415 997L424 986L430 995L438 990L487 709L493 697L490 683L493 673L488 664L491 660L481 653L471 635L477 624L472 611L450 595L442 593L429 579L431 504L453 503L466 493L473 497L485 486L497 499L502 495L503 500L512 499L513 495L520 495L513 487L518 472L513 470L516 465L506 454L495 450L491 455L473 449L465 452L463 447L450 451L450 388L470 386L478 381L493 388L613 387L602 377L608 364L614 361L619 370L634 377L650 356L665 358L672 344L685 335L691 339L693 357Z"/><path class="uf" d="M2252 159L2253 165L2263 171L2262 221L2268 239L2269 255L2276 280L2279 281L2285 296L2284 311L2289 309L2293 315L2301 343L2299 346L2316 339L2323 340L2333 351L2344 380L2358 381L2374 390L2379 412L2377 441L2372 449L2372 461L2358 482L2357 490L2336 492L2327 498L2313 529L2302 541L2276 553L2262 569L2249 572L2226 611L2204 638L2202 667L2192 676L2184 677L2181 673L2178 677L2175 672L2167 684L2162 675L2141 672L2139 666L2132 665L2131 653L2134 648L2129 643L2121 645L2125 633L2123 619L2112 618L2106 606L2107 590L2091 575L2083 574L2079 558L2060 522L2067 492L2037 467L2032 447L2038 444L2036 436L2025 439L2025 426L2014 426L2014 419L2012 423L2008 422L2008 417L2006 421L1999 418L1995 421L1990 414L1986 416L1987 413L1980 412L1979 408L1972 411L1966 396L1963 394L1962 397L1950 386L1908 382L1907 363L1902 354L1906 340L1896 317L1908 313L1914 315L1916 327L1922 326L1938 339L1962 342L1983 337L1986 330L1989 333L1991 328L1998 328L1996 326L2003 322L2007 325L2004 329L2025 334L2032 334L2031 331L2044 325L2054 333L2050 338L2051 343L2053 339L2067 338L2082 343L2091 332L2108 323L2120 308L2122 302L2120 296L2136 269L2141 243L2155 230L2181 182L2192 172L2197 161L2208 156L2217 118L2223 118L2246 141L2252 159Z"/><path class="uf" d="M3401 1416L3406 1431L3426 1434L3434 1440L3449 1439L3457 1446L3461 1457L3465 1458L3472 1442L3480 1447L3475 1455L3479 1460L3486 1464L3495 1459L3497 1462L3495 1474L3506 1502L3526 1510L3522 1520L3527 1525L3522 1532L3529 1542L3526 1552L3530 1557L3542 1560L3551 1593L3539 1603L3544 1611L3541 1615L3544 1629L3526 1636L3520 1631L3505 1631L3503 1652L3515 1662L3520 1676L3528 1679L3525 1689L3528 1699L3539 1703L3544 1711L3556 1717L3559 1712L3572 1715L3589 1704L3562 1759L3521 1823L3492 1855L3478 1861L3469 1860L3471 1852L3466 1853L3462 1863L3436 1882L3432 1888L3433 1897L3438 1898L3440 1905L3435 1916L3440 1924L3432 1927L3429 1934L3436 1954L3423 2031L3429 2059L3435 2126L3443 2146L3434 2176L3427 2185L3428 2198L3423 2203L3415 2236L3418 2250L3409 2277L3410 2318L3416 2329L3403 2347L3386 2354L3374 2369L3364 2395L3311 2358L3307 2352L3316 2345L3311 2333L3305 2332L3299 2321L3298 2324L3292 2321L3293 2317L3288 2317L3282 2305L3272 2301L3274 2293L3280 2288L3277 2266L3285 2248L3305 2250L3308 2241L3299 2239L3306 2217L3317 2218L3316 2212L3323 2202L3326 2206L3333 2191L3341 2188L3339 2184L3346 2171L3339 2162L3341 2160L3332 2160L3324 2150L3316 2151L3310 2140L3296 2142L3288 2135L3278 2140L3265 2127L3258 2131L3254 2125L3247 2129L3240 2125L3235 2131L3222 2137L3204 2134L3201 2110L3159 2070L3146 2077L3130 2079L3123 2069L3114 2072L3097 2066L3097 2062L3069 2049L3049 2031L3026 2025L3001 2032L2991 2041L2987 2035L2957 2025L2958 2012L2967 1994L2947 1987L2933 1988L2925 1983L2891 1994L2866 2010L2865 2018L2846 2028L2841 2035L2830 2034L2806 2055L2795 2054L2780 2071L2770 2072L2765 2076L2757 2074L2745 2086L2741 2079L2748 2077L2756 2057L2748 2043L2752 2039L2750 2028L2754 2026L2755 2014L2751 2002L2759 2001L2762 1995L2747 1983L2747 1979L2727 1970L2733 1961L2727 1954L2730 1945L2726 1940L2731 1937L2727 1934L2730 1931L2728 1929L2737 1919L2730 1916L2733 1906L2729 1903L2749 1888L2747 1886L2727 1895L2722 1890L2725 1875L2722 1870L2727 1861L2741 1856L2742 1852L2723 1855L2728 1843L2726 1818L2737 1813L2738 1808L2728 1809L2728 1802L2719 1794L2722 1790L2717 1789L2714 1764L2721 1756L2736 1750L2717 1747L2722 1737L2717 1735L2724 1729L2723 1723L2745 1724L2723 1714L2707 1712L2693 1689L2707 1679L2714 1659L2726 1651L2725 1645L2731 1639L2729 1636L2734 1632L2733 1625L2747 1620L2751 1614L2770 1604L2770 1597L2778 1594L2782 1586L2780 1575L2791 1571L2811 1605L2806 1611L2807 1622L2826 1642L2842 1644L2856 1653L2864 1650L2874 1638L2882 1636L2882 1629L2890 1623L2898 1625L2914 1615L2921 1622L2933 1624L2939 1618L2943 1602L2954 1602L2967 1578L2969 1568L2976 1568L2979 1560L2974 1551L2980 1544L2967 1536L2961 1515L2968 1504L2996 1486L3001 1487L3016 1502L3031 1497L3037 1502L3045 1501L3048 1512L3058 1515L3060 1522L3065 1522L3070 1513L3079 1514L3083 1510L3092 1509L3116 1489L3137 1485L3147 1488L3155 1484L3165 1469L3166 1461L3183 1456L3199 1431L3209 1434L3225 1430L3224 1435L3232 1439L3234 1444L3243 1444L3255 1470L3268 1476L3266 1488L3260 1491L3257 1505L3272 1508L3281 1501L3287 1502L3292 1495L3297 1498L3300 1495L3308 1466L3320 1471L3337 1465L3345 1453L3343 1443L3364 1439L3362 1426L3370 1426L3390 1414L3401 1416Z"/><path class="uf" d="M3331 844L3369 863L3392 878L3405 882L3421 899L3430 900L3438 910L3447 914L3461 927L3480 931L3490 948L3524 985L3548 1000L3552 1010L3565 1023L3574 1023L3591 1030L3598 1043L3560 1053L3535 1110L3518 1127L3517 1133L3521 1133L3510 1155L3496 1169L3490 1169L3489 1165L3482 1168L3470 1188L3471 1196L3468 1199L3476 1201L3467 1211L3461 1230L3466 1238L3452 1251L3452 1259L3461 1265L3459 1279L3465 1279L3474 1289L3469 1303L3463 1306L3462 1317L3457 1319L3454 1326L3446 1326L3446 1331L3435 1336L3432 1344L3427 1341L3420 1346L3416 1332L3399 1326L3402 1321L3398 1314L3365 1291L3341 1294L3336 1299L3309 1303L3302 1297L3280 1299L3285 1272L3293 1260L3291 1246L3297 1240L3291 1241L3286 1233L3262 1225L3256 1211L3257 1192L3245 1164L3248 1157L3242 1127L3245 1122L3241 1102L3244 1101L3243 1078L3223 1065L3223 1058L3215 1054L3212 1047L3216 1038L3212 1036L3219 1027L3212 1017L3224 993L3223 983L3227 977L3222 972L3225 964L3211 964L3215 954L3207 943L3213 931L3203 928L3200 917L3207 909L3195 897L3211 869L3211 860L3205 852L3211 848L3226 850L3275 844L3284 838L3331 844Z"/><path class="uf" d="M3263 2644L3255 2654L3250 2673L3240 2684L3240 2690L3227 2682L3209 2684L3167 2672L3167 2647L3163 2641L3151 2636L3158 2624L3153 2621L3159 2608L3153 2597L3163 2581L3199 2579L3206 2555L3218 2549L3220 2527L3232 2517L3231 2509L3239 2510L3241 2507L3239 2503L3245 2491L3241 2488L3244 2486L3241 2474L3230 2465L3234 2457L3220 2446L3212 2445L3213 2440L3223 2440L3226 2444L3244 2441L3241 2429L3231 2423L3234 2406L3218 2404L3222 2401L3221 2391L3230 2377L3237 2377L3246 2371L3258 2376L3258 2371L3245 2359L3247 2357L3254 2355L3264 2362L3282 2349L3311 2358L3365 2393L3359 2410L3357 2444L3363 2491L3351 2525L3334 2534L3319 2555L3314 2566L3313 2582L3310 2589L3304 2589L3306 2593L3292 2624L3288 2622L3272 2644L3270 2639L3263 2644Z"/><path class="uf" d="M2351 1801L2344 1813L2348 1816L2344 1818L2341 1828L2338 1828L2338 1844L2375 1857L2427 1887L2431 1867L2440 1848L2452 1839L2457 1845L2456 1850L2466 1856L2478 1841L2489 1852L2489 1859L2502 1866L2503 1892L2511 1873L2514 1874L2517 1889L2543 1875L2546 1875L2544 1891L2552 1889L2554 1883L2563 1891L2577 1891L2591 1907L2596 1897L2592 1881L2595 1870L2602 1872L2602 1878L2610 1878L2615 1889L2620 1883L2629 1886L2634 1879L2642 1881L2658 1873L2680 1857L2709 1857L2713 1842L2718 1846L2718 1859L2742 1852L2741 1856L2727 1861L2722 1870L2725 1875L2721 1885L2724 1885L2722 1890L2726 1895L2749 1888L2729 1903L2733 1906L2730 1916L2737 1919L2728 1929L2730 1931L2727 1934L2731 1937L2726 1940L2730 1945L2727 1954L2733 1961L2727 1970L2747 1979L2747 1983L2762 1995L2759 2001L2751 2002L2755 2014L2754 2026L2750 2028L2752 2039L2744 2054L2737 2051L2736 2055L2725 2053L2722 2041L2704 2030L2698 2039L2703 2045L2700 2052L2704 2065L2693 2069L2670 2061L2664 2066L2667 2071L2662 2083L2667 2083L2672 2092L2663 2104L2661 2115L2670 2122L2674 2149L2648 2156L2643 2153L2635 2161L2626 2164L2620 2159L2620 2148L2626 2135L2626 2119L2616 2115L2616 2110L2541 2110L2536 2131L2540 2134L2532 2144L2535 2154L2533 2165L2627 2166L2622 2173L2625 2183L2612 2210L2616 2218L2632 2227L2637 2251L2644 2258L2639 2266L2622 2277L2614 2288L2614 2295L2607 2293L2604 2305L2609 2313L2624 2312L2631 2321L2620 2343L2629 2366L2605 2383L2602 2380L2595 2389L2596 2393L2564 2410L2562 2404L2549 2403L2534 2393L2529 2398L2521 2396L2513 2398L2506 2392L2481 2398L2469 2391L2456 2402L2453 2398L2443 2401L2439 2412L2427 2424L2417 2416L2416 2410L2411 2409L2409 2415L2401 2416L2401 2420L2387 2424L2365 2420L2359 2427L2337 2430L2317 2454L2318 2463L2315 2470L2301 2474L2288 2489L2282 2502L2285 2510L2267 2500L2261 2491L2246 2487L2229 2477L2206 2474L2187 2465L2179 2457L2166 2455L2156 2445L2141 2443L2130 2429L2120 2426L2116 2429L2101 2429L2085 2424L2080 2414L2100 2395L2082 2390L2074 2395L2067 2391L2063 2368L2069 2365L2070 2359L2064 2352L2061 2337L2054 2331L2053 2313L2058 2298L2056 2290L2065 2271L2071 2267L2076 2246L2082 2246L2083 2240L2097 2234L2101 2223L2104 2224L2102 2219L2113 2213L2115 2206L2107 2200L2108 2190L2121 2186L2118 2183L2123 2174L2142 2167L2149 2149L2173 2149L2179 2141L2185 2142L2196 2125L2195 2114L2200 2115L2202 2108L2207 2078L2218 2067L2237 2057L2247 2063L2262 2052L2261 2044L2274 2013L2270 2002L2272 1989L2278 1971L2286 1969L2282 1933L2289 1929L2293 1913L2302 1904L2302 1898L2308 1891L2308 1866L2312 1864L2309 1860L2316 1858L2320 1831L2325 1829L2331 1815L2351 1801Z"/><path class="uf" d="M2653 1459L2659 1451L2657 1448L2665 1445L2663 1433L2667 1429L2664 1420L2676 1405L2675 1400L2692 1392L2700 1392L2708 1367L2705 1358L2695 1350L2669 1356L2657 1367L2652 1365L2639 1346L2633 1341L2633 1336L2626 1333L2626 1326L2622 1322L2619 1325L2615 1313L2610 1313L2608 1304L2599 1304L2609 1297L2608 1289L2599 1286L2594 1290L2584 1280L2587 1274L2594 1274L2605 1258L2608 1227L2620 1187L2615 1172L2615 1147L2609 1133L2608 1113L2585 1098L2575 1098L2571 1086L2559 1084L2552 1087L2542 1086L2525 1077L2508 1080L2501 1094L2494 1091L2487 1095L2580 1019L2591 1021L2597 1016L2611 991L2620 984L2626 965L2638 958L2648 946L2653 916L2661 908L2662 897L2674 891L2675 884L2680 882L2678 878L2683 875L2681 872L2687 869L2690 857L2687 848L2694 843L2697 844L2691 839L2689 829L2693 824L2696 827L2704 821L2705 814L2713 813L2710 801L2713 797L2708 797L2711 784L2717 785L2726 775L2733 743L2722 737L2738 728L2740 718L2736 708L2743 694L2737 688L2738 682L2745 680L2747 673L2749 677L2751 666L2753 669L2756 665L2754 669L2757 672L2753 676L2759 674L2758 684L2768 665L2768 670L2762 678L2766 675L2762 682L2768 681L2766 688L2771 677L2773 682L2768 688L2772 685L2773 688L2778 673L2784 674L2777 684L2782 687L2779 695L2782 691L2784 694L2778 698L2782 696L2780 700L2789 697L2793 686L2793 691L2799 687L2796 695L2801 689L2799 701L2810 689L2802 703L2806 712L2802 713L2807 714L2806 705L2809 702L2810 709L2811 702L2816 699L2814 696L2818 696L2815 691L2819 692L2821 702L2812 708L2813 711L2816 707L2813 715L2817 707L2818 712L2818 707L2821 709L2813 728L2815 734L2820 720L2826 722L2827 715L2835 706L2837 713L2840 696L2842 712L2844 708L2854 711L2855 708L2855 712L2863 702L2867 702L2866 709L2865 706L2861 708L2864 709L2859 715L2859 721L2864 722L2867 717L2871 722L2869 726L2870 718L2873 716L2873 723L2879 715L2877 721L2881 716L2884 722L2883 727L2878 724L2870 727L2868 730L2873 734L2870 735L2873 734L2871 731L2879 734L2867 741L2877 740L2882 734L2881 740L2884 739L2883 732L2889 734L2885 740L2889 745L2884 746L2890 746L2891 740L2890 746L2895 744L2888 750L2895 751L2896 748L2899 754L2896 755L2901 762L2898 774L2908 781L2912 794L2906 801L2915 810L2944 800L2944 805L2936 806L2950 808L2948 817L2960 799L2967 794L2970 797L2972 789L2983 782L2995 797L3006 792L3025 797L3067 816L3072 825L3072 819L3068 816L3071 816L3093 831L3117 827L3119 830L3134 829L3137 836L3139 831L3156 832L3152 847L3159 857L3147 871L3145 879L3138 885L3128 886L3130 891L3120 904L3107 903L3095 909L3091 905L3074 928L3075 939L3069 951L3060 959L3053 976L3044 983L3046 998L3054 1001L3057 1008L3047 1029L3050 1034L3048 1039L3057 1054L3062 1078L3059 1095L3046 1105L3039 1119L3033 1123L3033 1150L3038 1159L3035 1165L3056 1183L3056 1193L3059 1194L3050 1227L3043 1235L3019 1237L3002 1244L2974 1230L2953 1237L2950 1234L2943 1236L2939 1242L2935 1240L2936 1245L2935 1243L2921 1260L2917 1272L2909 1272L2892 1283L2880 1299L2867 1296L2857 1307L2817 1318L2805 1327L2797 1346L2793 1376L2786 1385L2773 1418L2776 1421L2759 1438L2753 1453L2763 1479L2763 1494L2770 1497L2774 1508L2768 1516L2768 1554L2758 1586L2753 1586L2750 1578L2737 1581L2733 1577L2717 1577L2709 1565L2705 1543L2697 1540L2697 1536L2690 1533L2696 1519L2701 1516L2699 1508L2692 1507L2689 1499L2679 1501L2671 1489L2673 1480L2667 1472L2663 1473L2664 1467L2650 1466L2653 1459Z"/><path class="uf" d="M2926 1984L2929 1987L2931 1986L2933 1986L2932 1988L2933 1988L2935 1986L2937 1987L2938 1987L2938 1988L2939 1987L2939 1989L2941 1988L2943 1989L2946 1987L2947 1987L2948 1988L2949 1987L2950 1990L2951 1989L2952 1990L2952 1990L2953 1991L2953 1990L2955 1990L2955 1989L2957 1990L2958 1991L2960 1991L2960 1992L2961 1991L2961 1992L2962 1991L2964 1991L2963 1992L2967 1994L2964 1999L2962 2004L2958 2012L2957 2018L2959 2021L2958 2023L2958 2024L2957 2023L2958 2024L2957 2025L2958 2025L2960 2027L2967 2029L2970 2030L2973 2030L2974 2031L2973 2033L2976 2032L2979 2034L2983 2036L2987 2035L2987 2036L2991 2038L2991 2041L2993 2041L2993 2040L2997 2039L2997 2038L2996 2037L2998 2037L2998 2035L3001 2032L3003 2032L3004 2031L3009 2030L3013 2027L3015 2028L3016 2027L3023 2026L3024 2025L3025 2026L3026 2025L3028 2027L3030 2027L3031 2028L3033 2027L3035 2030L3036 2028L3037 2029L3040 2029L3042 2030L3045 2030L3049 2031L3050 2034L3051 2034L3052 2036L3055 2036L3055 2037L3063 2044L3066 2045L3067 2046L3069 2049L3071 2048L3072 2050L3075 2052L3076 2051L3076 2052L3079 2054L3081 2052L3083 2053L3085 2056L3088 2057L3088 2058L3091 2059L3093 2062L3097 2062L3097 2066L3101 2068L3103 2067L3105 2070L3107 2068L3109 2070L3114 2072L3117 2070L3121 2070L3123 2069L3124 2070L3125 2072L3128 2074L3130 2079L3140 2076L3140 2077L3146 2077L3146 2076L3151 2074L3152 2072L3159 2070L3201 2110L3204 2134L3208 2134L3210 2135L3215 2134L3222 2137L3223 2135L3227 2134L3228 2132L3231 2132L3232 2131L3235 2131L3238 2129L3240 2125L3244 2126L3245 2129L3247 2129L3251 2128L3252 2125L3254 2125L3257 2128L3257 2129L3258 2131L3261 2130L3261 2128L3262 2127L3264 2127L3270 2133L3272 2132L3274 2134L3275 2137L3278 2138L3277 2139L3278 2140L3282 2140L3283 2137L3286 2137L3288 2135L3291 2138L3291 2141L3295 2142L3296 2141L3296 2142L3297 2141L3300 2142L3300 2142L3310 2140L3313 2146L3316 2147L3316 2151L3319 2150L3322 2151L3324 2150L3325 2152L3326 2151L3326 2153L3325 2154L3326 2154L3327 2155L3326 2156L3328 2156L3330 2159L3331 2158L3332 2159L3332 2160L3333 2159L3336 2160L3337 2159L3341 2160L3339 2162L3344 2167L3344 2169L3346 2171L3344 2174L3342 2174L3344 2176L3344 2179L3341 2181L3339 2184L3341 2188L3339 2188L3337 2190L3336 2193L3335 2191L3333 2191L3333 2193L3330 2196L3329 2199L3327 2203L3326 2203L3326 2206L3324 2206L3323 2205L3323 2202L3321 2207L3317 2212L3316 2212L3316 2214L3317 2214L3317 2216L3317 2218L3312 2217L3310 2216L3309 2217L3306 2217L3302 2228L3303 2231L3303 2234L3299 2239L3301 2240L3306 2239L3308 2241L3309 2245L3308 2246L3307 2246L3305 2250L3304 2250L3303 2249L3301 2251L3299 2250L3299 2249L3297 2247L3293 2250L3291 2249L3289 2249L3288 2248L3285 2248L3283 2256L3280 2258L3277 2266L3277 2268L3279 2269L3278 2273L3277 2275L3277 2278L3279 2279L3279 2280L3277 2285L3280 2288L3274 2293L3275 2294L3274 2296L3275 2299L3272 2301L3275 2302L3277 2301L3279 2304L3282 2305L3282 2306L3285 2309L3286 2309L3285 2312L3287 2313L3288 2317L3290 2318L3291 2317L3293 2317L3292 2321L3294 2323L3297 2321L3298 2324L3299 2321L3301 2324L3301 2326L3304 2327L3304 2330L3305 2330L3305 2332L3308 2332L3308 2333L3311 2333L3312 2335L3311 2340L3313 2340L3313 2343L3314 2343L3316 2345L3312 2350L3307 2352L3307 2354L3311 2356L3311 2358L3306 2356L3300 2353L3289 2352L3288 2353L3286 2351L3284 2351L3282 2349L3276 2352L3276 2354L3273 2354L3272 2359L3270 2359L3269 2361L3266 2361L3264 2362L3262 2360L3260 2361L3258 2360L3258 2358L3257 2357L3256 2358L3255 2356L3254 2355L3253 2356L3252 2356L3249 2359L3247 2357L3245 2359L3258 2371L3258 2376L3256 2376L3250 2375L3248 2372L3247 2372L3246 2371L3242 2374L3241 2373L3240 2375L3238 2374L3237 2375L3237 2377L3235 2377L3234 2376L3233 2376L3233 2377L3232 2376L3230 2377L3230 2378L3227 2380L3226 2381L3227 2383L3226 2384L3227 2386L3221 2391L3222 2397L3220 2399L3220 2400L3222 2401L3220 2401L3218 2404L3234 2406L3234 2407L3232 2420L3233 2422L3231 2423L3232 2425L3233 2425L3233 2425L3237 2428L3241 2429L3242 2437L3244 2441L3239 2444L3226 2444L3225 2444L3224 2441L3223 2440L3213 2440L3212 2442L3213 2443L3212 2445L3215 2448L3216 2445L3217 2446L3220 2446L3221 2449L3224 2449L3224 2452L3226 2453L3228 2454L3228 2455L3229 2454L3230 2457L3232 2458L3234 2457L3229 2461L3229 2462L3231 2467L3233 2468L3235 2468L3234 2469L3235 2468L3235 2470L3237 2470L3239 2472L3240 2473L3240 2474L3241 2474L3242 2478L3243 2479L3243 2480L3242 2483L3242 2484L3242 2485L3244 2486L3244 2487L3241 2488L3243 2489L3243 2490L3245 2491L3242 2495L3243 2498L3240 2500L3239 2503L3241 2506L3239 2510L3235 2511L3231 2509L3232 2517L3230 2518L3229 2518L3229 2520L3227 2520L3225 2524L3223 2524L3223 2526L3220 2527L3219 2534L3217 2535L3220 2539L3220 2541L3218 2543L3219 2544L3218 2545L3218 2549L3214 2551L3212 2554L3207 2554L3206 2555L3205 2558L3206 2561L3203 2569L3202 2572L3200 2576L3199 2579L3196 2580L3196 2581L3163 2581L3160 2589L3154 2593L3153 2597L3154 2597L3155 2601L3158 2602L3159 2603L3157 2612L3158 2614L3156 2616L3155 2620L3153 2621L3157 2622L3157 2624L3158 2624L3156 2626L3156 2626L3153 2631L3153 2635L3151 2634L3151 2638L3149 2640L3146 2639L3146 2643L3146 2644L3144 2647L3144 2647L3143 2649L3142 2652L3141 2652L3142 2654L3137 2652L3133 2654L3130 2654L3128 2656L3126 2656L3125 2657L3126 2659L3131 2662L3132 2664L3130 2663L3130 2665L3126 2668L3126 2670L3123 2670L3123 2673L3119 2678L3120 2680L3120 2682L3121 2682L3121 2685L3117 2688L3116 2692L3118 2694L3116 2694L3117 2697L3115 2699L3116 2699L3116 2700L3114 2701L3113 2700L3112 2701L3113 2703L3111 2706L3113 2707L3113 2708L3115 2709L3113 2710L3112 2713L3110 2713L3109 2715L3107 2716L3108 2717L3106 2718L3104 2722L3105 2723L3104 2724L3104 2725L3106 2724L3107 2726L3110 2725L3112 2727L3112 2728L3113 2728L3113 2731L3107 2735L3103 2735L3083 2744L3083 2745L3082 2745L3054 2756L3051 2759L3043 2764L3039 2765L3040 2767L3036 2769L3035 2768L3032 2768L3029 2771L3028 2768L3030 2766L3030 2763L3028 2763L3026 2762L3023 2764L3023 2763L3021 2763L3019 2761L3014 2762L3009 2760L2998 2767L2994 2767L2993 2766L2988 2769L2986 2767L2986 2765L2984 2768L2980 2767L2978 2769L2977 2767L2976 2767L2972 2770L2969 2768L2969 2766L2961 2770L2958 2770L2958 2771L2946 2776L2944 2775L2939 2776L2938 2778L2936 2777L2936 2778L2934 2779L2934 2781L2932 2782L2932 2781L2930 2783L2929 2783L2927 2785L2926 2785L2923 2787L2922 2786L2921 2787L2921 2784L2918 2784L2915 2786L2915 2785L2911 2785L2909 2787L2908 2786L2906 2785L2902 2786L2902 2788L2896 2791L2895 2793L2893 2792L2892 2793L2889 2792L2886 2793L2882 2798L2878 2797L2876 2796L2874 2798L2869 2799L2868 2801L2866 2803L2862 2802L2860 2803L2859 2805L2855 2805L2853 2807L2850 2807L2847 2807L2847 2806L2841 2808L2835 2811L2832 2815L2824 2818L2824 2821L2823 2822L2817 2822L2811 2825L2810 2825L2810 2822L2807 2822L2804 2819L2803 2819L2804 2820L2802 2823L2801 2823L2797 2825L2793 2825L2796 2823L2794 2820L2790 2824L2785 2825L2784 2824L2786 2820L2786 2818L2784 2817L2782 2819L2780 2818L2778 2821L2782 2825L2780 2826L2778 2826L2773 2829L2771 2830L2770 2832L2773 2834L2776 2832L2779 2832L2781 2837L2779 2840L2781 2841L2778 2841L2778 2839L2777 2839L2775 2841L2776 2844L2773 2846L2772 2843L2770 2843L2768 2844L2766 2847L2764 2848L2763 2844L2762 2842L2759 2844L2754 2847L2752 2849L2744 2849L2739 2852L2738 2851L2740 2849L2739 2846L2734 2846L2730 2848L2730 2849L2728 2849L2727 2848L2724 2850L2722 2849L2720 2850L2716 2847L2717 2846L2717 2843L2718 2839L2721 2836L2718 2836L2716 2834L2709 2833L2709 2831L2707 2830L2707 2829L2707 2828L2708 2827L2713 2826L2714 2827L2715 2826L2715 2825L2712 2823L2712 2822L2714 2822L2712 2820L2713 2819L2712 2818L2711 2817L2714 2814L2712 2815L2709 2812L2706 2812L2705 2811L2704 2812L2704 2811L2701 2809L2702 2807L2700 2807L2699 2805L2698 2805L2697 2804L2692 2804L2689 2801L2689 2797L2688 2797L2686 2794L2685 2792L2683 2791L2685 2790L2684 2786L2686 2785L2686 2784L2687 2782L2688 2778L2691 2778L2691 2776L2694 2775L2695 2773L2693 2773L2693 2771L2690 2769L2685 2769L2683 2768L2689 2767L2689 2766L2688 2765L2687 2763L2690 2761L2693 2762L2694 2761L2688 2753L2688 2751L2690 2748L2689 2748L2689 2745L2686 2744L2690 2739L2690 2738L2692 2737L2692 2734L2693 2732L2692 2730L2693 2728L2697 2728L2698 2728L2698 2726L2700 2725L2700 2724L2703 2721L2703 2718L2705 2715L2702 2712L2704 2707L2703 2705L2699 2704L2697 2703L2695 2704L2694 2704L2693 2702L2690 2699L2690 2696L2689 2696L2685 2700L2683 2699L2682 2699L2680 2698L2679 2696L2676 2697L2672 2697L2672 2699L2664 2703L2661 2702L2658 2703L2655 2702L2655 2700L2657 2695L2655 2694L2654 2692L2653 2691L2653 2690L2652 2689L2651 2685L2649 2684L2650 2681L2647 2681L2645 2679L2645 2675L2643 2673L2645 2670L2643 2669L2643 2667L2641 2662L2642 2658L2638 2654L2638 2653L2635 2651L2633 2648L2636 2643L2635 2640L2636 2638L2638 2637L2639 2634L2638 2633L2640 2630L2645 2631L2647 2628L2647 2624L2645 2624L2646 2622L2644 2621L2644 2619L2644 2619L2641 2612L2636 2610L2628 2605L2629 2603L2628 2603L2629 2600L2628 2595L2630 2589L2633 2586L2634 2582L2632 2579L2632 2577L2628 2575L2626 2572L2622 2570L2620 2568L2617 2568L2614 2565L2613 2563L2615 2561L2611 2556L2607 2558L2604 2558L2603 2560L2600 2560L2599 2563L2595 2565L2588 2558L2584 2559L2579 2558L2576 2560L2573 2559L2572 2563L2573 2565L2570 2572L2566 2571L2565 2566L2562 2563L2561 2564L2561 2567L2558 2572L2556 2572L2555 2574L2553 2575L2549 2574L2542 2570L2542 2567L2539 2563L2536 2563L2535 2568L2539 2571L2539 2573L2536 2574L2532 2574L2529 2571L2524 2572L2521 2571L2512 2574L2504 2573L2497 2577L2489 2575L2484 2576L2480 2576L2477 2578L2477 2583L2474 2587L2474 2589L2475 2591L2475 2595L2476 2600L2475 2603L2473 2604L2466 2599L2467 2586L2466 2581L2464 2576L2460 2575L2457 2575L2451 2588L2446 2591L2442 2590L2438 2586L2434 2577L2433 2570L2435 2562L2436 2560L2439 2560L2439 2557L2434 2556L2429 2559L2421 2558L2416 2555L2415 2552L2410 2551L2401 2553L2388 2552L2382 2553L2381 2555L2377 2554L2370 2552L2365 2553L2362 2552L2357 2548L2351 2548L2347 2547L2343 2548L2332 2546L2327 2540L2321 2538L2318 2540L2311 2542L2303 2550L2291 2554L2282 2559L2279 2559L2275 2563L2273 2563L2270 2568L2268 2565L2270 2560L2268 2556L2270 2551L2268 2547L2268 2541L2266 2538L2267 2536L2266 2534L2266 2529L2271 2519L2274 2518L2276 2519L2277 2518L2277 2514L2274 2510L2274 2508L2276 2507L2285 2510L2287 2509L2287 2507L2282 2502L2288 2489L2294 2484L2296 2479L2301 2477L2302 2476L2301 2474L2310 2474L2315 2470L2318 2463L2317 2454L2322 2452L2324 2449L2326 2443L2330 2441L2337 2430L2342 2428L2347 2428L2351 2426L2359 2427L2362 2424L2363 2421L2365 2420L2373 2422L2378 2421L2382 2424L2387 2424L2389 2421L2392 2422L2397 2419L2401 2420L2402 2419L2400 2417L2401 2416L2408 2414L2409 2415L2411 2413L2410 2410L2411 2409L2416 2410L2417 2416L2421 2421L2423 2424L2427 2424L2430 2420L2431 2417L2435 2416L2436 2414L2439 2412L2441 2408L2445 2405L2443 2402L2443 2401L2448 2401L2451 2398L2453 2398L2452 2400L2456 2402L2458 2400L2459 2398L2461 2397L2464 2397L2465 2396L2465 2394L2469 2391L2474 2392L2475 2393L2479 2395L2480 2397L2481 2398L2484 2395L2485 2396L2487 2394L2489 2395L2491 2394L2492 2395L2497 2394L2499 2393L2502 2393L2506 2392L2506 2395L2508 2395L2510 2397L2513 2395L2513 2398L2517 2395L2518 2396L2521 2396L2521 2397L2526 2397L2529 2398L2530 2398L2529 2396L2532 2395L2533 2393L2534 2393L2535 2394L2538 2395L2538 2396L2544 2397L2545 2401L2549 2403L2553 2403L2554 2401L2559 2405L2562 2404L2562 2408L2563 2408L2564 2410L2567 2409L2567 2407L2568 2407L2570 2408L2571 2407L2572 2407L2573 2406L2572 2406L2573 2404L2576 2405L2576 2401L2578 2400L2581 2402L2584 2401L2583 2399L2586 2398L2585 2396L2587 2396L2588 2398L2590 2396L2592 2396L2593 2393L2594 2393L2594 2394L2596 2393L2597 2391L2595 2389L2597 2387L2596 2386L2597 2385L2598 2386L2598 2385L2600 2383L2599 2383L2601 2382L2602 2380L2602 2381L2604 2379L2605 2383L2606 2380L2609 2379L2610 2378L2612 2378L2613 2376L2615 2377L2615 2374L2617 2375L2618 2374L2617 2373L2618 2372L2619 2372L2622 2370L2622 2368L2623 2369L2625 2367L2627 2367L2627 2366L2629 2366L2629 2364L2627 2363L2628 2361L2626 2360L2626 2356L2623 2354L2624 2351L2623 2350L2622 2350L2622 2347L2620 2343L2622 2341L2622 2339L2624 2337L2623 2334L2626 2333L2626 2330L2630 2327L2629 2325L2630 2324L2631 2321L2624 2312L2620 2312L2618 2311L2613 2314L2611 2313L2610 2311L2608 2312L2607 2306L2604 2305L2606 2302L2605 2301L2606 2301L2604 2299L2607 2297L2607 2296L2606 2295L2608 2294L2607 2293L2611 2296L2612 2294L2614 2295L2612 2293L2614 2292L2615 2292L2616 2292L2615 2291L2616 2289L2614 2288L2616 2287L2616 2286L2617 2286L2617 2285L2619 2285L2620 2282L2621 2282L2623 2280L2621 2279L2623 2279L2622 2278L2622 2277L2624 2276L2625 2275L2625 2276L2626 2275L2627 2276L2628 2274L2629 2274L2630 2272L2629 2271L2630 2270L2631 2271L2632 2269L2632 2270L2632 2268L2634 2269L2635 2269L2634 2268L2635 2268L2636 2268L2636 2267L2638 2267L2637 2266L2639 2266L2639 2265L2639 2264L2640 2265L2641 2263L2642 2263L2644 2261L2642 2261L2643 2260L2642 2260L2644 2259L2644 2258L2640 2255L2641 2254L2639 2253L2641 2252L2639 2250L2637 2251L2637 2249L2638 2248L2636 2247L2637 2246L2636 2244L2638 2242L2636 2243L2636 2242L2635 2241L2635 2238L2634 2237L2635 2236L2634 2236L2634 2235L2635 2232L2632 2231L2633 2228L2632 2229L2631 2228L2632 2227L2632 2227L2631 2227L2631 2226L2630 2226L2628 2223L2627 2223L2627 2222L2625 2222L2626 2220L2624 2222L2623 2219L2620 2220L2620 2218L2619 2218L2619 2219L2618 2217L2616 2218L2617 2216L2613 2214L2612 2210L2612 2207L2615 2204L2615 2199L2621 2193L2623 2189L2622 2187L2625 2183L2624 2181L2625 2181L2624 2180L2624 2178L2623 2178L2624 2177L2623 2176L2623 2175L2622 2175L2622 2173L2624 2173L2624 2169L2626 2169L2626 2167L2627 2166L2626 2164L2627 2162L2630 2161L2632 2162L2635 2161L2636 2159L2638 2158L2638 2157L2640 2157L2640 2155L2643 2153L2644 2153L2643 2155L2644 2154L2648 2156L2651 2154L2674 2149L2675 2146L2673 2141L2674 2139L2673 2133L2670 2128L2670 2122L2664 2119L2661 2115L2663 2104L2665 2101L2671 2097L2669 2096L2671 2095L2672 2092L2669 2089L2667 2088L2667 2083L2663 2085L2662 2083L2663 2082L2662 2080L2667 2071L2663 2067L2664 2066L2670 2061L2677 2062L2693 2069L2697 2068L2700 2066L2704 2065L2702 2060L2703 2057L2701 2055L2700 2052L2703 2045L2701 2043L2699 2042L2698 2039L2700 2037L2700 2035L2704 2034L2704 2030L2708 2031L2708 2033L2710 2033L2718 2039L2722 2041L2722 2045L2724 2046L2722 2050L2723 2051L2724 2051L2725 2053L2730 2052L2731 2054L2733 2054L2736 2055L2737 2053L2737 2051L2739 2053L2741 2052L2742 2054L2744 2054L2745 2050L2747 2051L2749 2047L2753 2050L2752 2052L2756 2055L2756 2057L2755 2060L2755 2064L2751 2068L2750 2071L2749 2072L2748 2077L2743 2079L2741 2079L2745 2086L2748 2086L2750 2080L2754 2080L2756 2075L2757 2074L2761 2073L2765 2076L2769 2074L2770 2072L2777 2072L2780 2071L2780 2069L2784 2068L2786 2065L2786 2063L2787 2062L2787 2063L2787 2062L2788 2062L2790 2061L2795 2054L2798 2054L2800 2055L2801 2055L2802 2056L2804 2055L2806 2055L2808 2052L2811 2052L2814 2049L2814 2047L2816 2048L2815 2046L2819 2045L2819 2043L2822 2043L2822 2042L2823 2041L2823 2040L2824 2040L2825 2039L2826 2039L2830 2034L2831 2035L2834 2033L2835 2034L2841 2035L2846 2028L2850 2027L2850 2026L2851 2026L2851 2025L2852 2025L2851 2024L2853 2023L2854 2024L2855 2023L2855 2022L2858 2022L2858 2020L2861 2019L2862 2020L2863 2018L2865 2018L2865 2017L2864 2018L2863 2017L2864 2015L2866 2014L2865 2014L2865 2012L2867 2011L2866 2010L2868 2010L2867 2009L2869 2010L2869 2009L2873 2008L2876 2005L2878 2005L2880 2002L2881 2002L2881 2002L2882 2002L2883 2002L2882 2000L2885 1999L2886 1998L2892 1995L2891 1994L2893 1994L2894 1993L2897 1992L2899 1993L2905 1989L2908 1987L2908 1988L2910 1987L2911 1987L2913 1985L2916 1984L2917 1985L2920 1985L2922 1986L2922 1985L2923 1986L2923 1984L2925 1984L2925 1983L2926 1984Z"/><path class="uf" d="M1992 2352L2002 2360L2010 2361L2017 2358L2031 2364L2035 2358L2070 2364L2063 2368L2070 2394L2082 2390L2100 2395L2080 2414L2085 2424L2101 2429L2122 2426L2130 2429L2141 2443L2156 2445L2172 2458L2179 2457L2187 2465L2206 2474L2229 2477L2246 2487L2250 2486L2264 2493L2267 2500L2276 2506L2274 2510L2277 2516L2271 2519L2266 2533L2270 2570L2263 2585L2237 2596L2213 2623L2209 2635L2210 2653L2200 2658L2194 2670L2185 2674L2186 2695L2176 2710L2166 2711L2163 2716L2169 2724L2166 2731L2144 2755L2134 2774L2091 2804L2077 2809L2057 2833L2043 2838L2018 2855L2015 2872L2006 2892L2002 2897L1982 2906L1968 2958L1952 2967L1938 2951L1915 2941L1912 2946L1894 2950L1889 2956L1864 2960L1853 2956L1850 2959L1842 2954L1842 2932L1837 2924L1832 2923L1829 2908L1835 2898L1830 2892L1833 2880L1826 2875L1819 2845L1824 2837L1824 2826L1814 2815L1812 2799L1807 2799L1802 2788L1767 2788L1752 2777L1749 2767L1738 2770L1726 2786L1719 2782L1717 2786L1710 2784L1706 2790L1702 2785L1691 2782L1683 2785L1671 2781L1667 2785L1654 2783L1635 2778L1631 2769L1622 2769L1613 2775L1595 2769L1593 2763L1602 2748L1597 2745L1602 2739L1599 2734L1605 2729L1600 2725L1602 2719L1597 2713L1608 2694L1601 2688L1608 2682L1607 2664L1611 2654L1601 2650L1607 2643L1598 2639L1600 2635L1607 2634L1602 2626L1595 2630L1594 2603L1586 2597L1585 2586L1578 2586L1582 2579L1578 2577L1598 2562L1603 2564L1607 2557L1581 2536L1615 2463L1623 2461L1621 2450L1616 2450L1637 2384L1647 2383L1635 2373L1621 2343L1624 2341L1614 2316L1622 2314L1624 2332L1629 2332L1632 2340L1647 2350L1654 2343L1679 2338L1686 2333L1694 2321L1692 2318L1702 2313L1707 2299L1716 2291L1724 2294L1739 2289L1744 2293L1776 2277L1783 2277L1793 2288L1799 2287L1816 2295L1822 2294L1833 2308L1855 2314L1871 2325L1897 2322L1908 2312L1924 2307L1934 2309L1943 2317L1943 2323L1951 2326L1963 2320L1973 2321L1977 2309L1985 2306L1996 2295L1998 2289L2008 2283L2011 2285L2009 2326L1999 2327L1991 2335L1984 2348L1985 2352L1992 2352Z"/><path class="uf" d="M1366 1890L1375 1874L1373 1868L1392 1850L1394 1822L1407 1809L1415 1808L1422 1794L1411 1785L1410 1772L1403 1763L1402 1751L1390 1744L1390 1719L1408 1700L1402 1683L1403 1672L1381 1671L1372 1666L1367 1671L1358 1664L1356 1659L1251 1659L1255 1639L1258 1640L1256 1629L1259 1602L1251 1591L1251 1580L1246 1575L1255 1546L1253 1534L1249 1532L1255 1529L1258 1523L1251 1511L1253 1510L1248 1507L1251 1499L1244 1496L1243 1487L1253 1484L1250 1469L1259 1452L1253 1442L1248 1440L1554 1439L1562 1432L1552 1430L1556 1420L1554 1409L1563 1392L1563 1377L1566 1373L1557 1344L1574 1322L1573 1306L1580 1295L1596 1313L1600 1325L1604 1328L1610 1357L1628 1381L1624 1401L1633 1436L1649 1438L1654 1448L1672 1453L1687 1470L1685 1478L1691 1483L1708 1485L1713 1500L1722 1497L2345 1544L2337 1564L2329 1573L2326 1596L2321 1600L2315 1620L2308 1626L2311 1635L2306 1644L2308 1667L2295 1703L2295 1714L2303 1720L2297 1734L2300 1746L2305 1748L2301 1759L2300 1780L2304 1782L2307 1803L2302 1820L2298 1821L2299 1825L2304 1825L2306 1842L2311 1840L2309 1843L2316 1844L2318 1848L2316 1858L2309 1860L2312 1864L2308 1866L2308 1891L2302 1898L2302 1904L2293 1913L2289 1929L2282 1933L2286 1969L2278 1971L2272 1989L2270 2002L2274 2013L2261 2044L2262 2052L2247 2063L2237 2057L2218 2067L2207 2078L2202 2108L2200 2115L2195 2114L2196 2125L2185 2142L2179 2141L2173 2149L2149 2149L2142 2167L2123 2174L2118 2183L2121 2186L2108 2190L2107 2200L2115 2206L2112 2215L2102 2219L2104 2224L2101 2223L2097 2234L2083 2240L2082 2246L2076 2246L2071 2267L2065 2271L2056 2290L2058 2296L2053 2329L2061 2337L2070 2364L2035 2358L2031 2364L2017 2358L2010 2361L2001 2359L1994 2352L1985 2352L1994 2330L2009 2326L2011 2285L2008 2283L1998 2289L1996 2295L1985 2306L1977 2309L1972 2322L1963 2320L1948 2326L1934 2309L1924 2307L1908 2312L1897 2322L1871 2325L1855 2314L1833 2308L1822 2294L1816 2295L1799 2287L1793 2288L1783 2277L1776 2277L1744 2293L1739 2289L1724 2294L1716 2291L1707 2299L1702 2313L1692 2318L1694 2321L1686 2333L1679 2338L1654 2343L1647 2350L1632 2340L1629 2332L1624 2332L1620 2313L1618 2316L1605 2305L1595 2311L1590 2309L1579 2298L1569 2295L1556 2278L1553 2259L1548 2253L1548 2230L1552 2219L1562 2209L1563 2186L1556 2186L1552 2192L1384 2187L1378 2107L1346 2071L1377 2070L1374 2022L1370 2021L1353 1979L1354 1970L1364 1959L1357 1954L1357 1945L1353 1946L1356 1940L1331 1928L1340 1917L1363 1905L1366 1890Z"/><path class="uf" d="M2661 633L2658 638L2663 645L2661 646L2664 648L2671 634L2671 646L2674 643L2673 650L2675 646L2677 650L2679 642L2681 652L2683 643L2688 646L2687 641L2691 639L2694 644L2688 658L2697 657L2700 650L2701 658L2704 648L2712 646L2705 657L2708 658L2708 665L2708 662L2713 662L2712 667L2715 659L2717 665L2720 660L2719 667L2723 668L2721 666L2722 661L2726 665L2723 661L2727 660L2727 652L2735 649L2733 657L2729 660L2732 658L2733 664L2727 677L2736 659L2738 665L2733 673L2736 676L2737 668L2739 673L2739 667L2746 662L2743 680L2737 688L2743 694L2736 708L2740 718L2738 728L2722 737L2733 743L2726 775L2717 785L2711 784L2708 797L2713 797L2710 801L2713 813L2705 814L2704 821L2696 827L2693 824L2689 829L2691 839L2697 844L2694 843L2687 848L2690 857L2687 869L2681 872L2683 875L2678 878L2680 882L2675 884L2674 891L2662 897L2661 908L2653 916L2648 946L2638 958L2626 965L2620 984L2611 991L2600 1012L2591 1021L2580 1019L2487 1095L2503 1102L2523 1099L2531 1112L2546 1120L2543 1131L2531 1136L2537 1155L2527 1160L2532 1170L2518 1178L2523 1198L2511 1195L2501 1205L2496 1226L2481 1235L2461 1238L2443 1253L2445 1283L2426 1314L2432 1328L2449 1340L2442 1379L2436 1398L2427 1405L2424 1418L2406 1444L2391 1451L2375 1477L2363 1489L2356 1508L2358 1515L2345 1544L1722 1497L1714 1501L1708 1485L1691 1483L1685 1478L1687 1470L1672 1453L1654 1448L1649 1438L1633 1436L1624 1401L1628 1381L1610 1357L1604 1328L1588 1300L1577 1291L1574 1273L1552 1251L1548 1230L1568 1207L1748 806L1742 802L1750 787L1766 780L1777 763L1765 766L1747 778L1736 774L1728 781L1721 781L1713 777L1716 762L1704 762L1692 751L1687 751L1684 741L1675 737L1674 732L1666 730L1652 732L1651 728L1639 725L1632 717L1625 719L1622 710L1615 711L1611 704L1598 700L1594 693L1597 676L1592 671L1586 673L1578 683L1569 673L1563 674L1552 663L1552 648L1526 628L1524 604L1510 594L1507 437L1515 443L1522 440L1526 431L1546 433L1550 423L1545 420L1545 414L1557 413L1556 406L1563 400L1571 405L1578 404L1581 410L1593 410L1595 394L1602 395L1616 387L1622 387L1628 392L1638 390L1648 377L1649 369L1661 360L1668 366L1682 357L1689 368L1698 367L1711 375L1717 367L1727 365L1731 369L1743 364L1763 372L1770 370L1776 375L1791 375L1796 371L1793 361L1796 356L1782 341L1783 337L1774 333L1778 323L1785 326L1789 307L1809 314L1814 320L1835 316L1846 318L1853 308L1861 310L1872 303L1874 307L1888 302L1906 340L1902 354L1907 363L1908 382L1950 386L1962 397L1963 394L1966 396L1972 411L1979 408L1980 412L1987 413L1986 416L1990 414L1995 421L1999 418L2006 421L2008 417L2008 422L2012 423L2014 419L2014 426L2025 426L2025 439L2036 436L2038 444L2032 447L2037 467L2067 492L2060 522L2079 558L2083 574L2091 575L2107 590L2106 606L2112 618L2123 619L2125 633L2121 645L2129 643L2134 648L2131 653L2132 665L2139 666L2141 672L2162 675L2164 683L2168 683L2167 678L2174 677L2175 672L2178 677L2181 673L2184 677L2192 676L2202 667L2204 638L2226 611L2249 572L2262 569L2276 553L2302 541L2313 529L2324 500L2333 493L2351 489L2357 490L2363 503L2361 526L2376 529L2389 525L2392 528L2398 523L2425 558L2470 583L2520 586L2522 596L2514 610L2560 626L2561 631L2570 615L2575 619L2572 628L2575 628L2578 616L2582 618L2582 624L2583 617L2588 613L2589 619L2595 620L2596 630L2600 618L2604 620L2609 636L2610 622L2613 619L2615 626L2625 619L2629 621L2628 625L2636 624L2633 631L2641 627L2640 638L2643 629L2648 626L2649 637L2652 631L2651 641L2654 640L2652 633L2659 630L2661 633Z"/><path class="uf" d="M3600 1163L3605 1165L3607 1175L3586 1194L3584 1211L3576 1215L3575 1231L3595 1229L3600 1242L3622 1231L3626 1239L3638 1233L3645 1244L3648 1244L3645 1254L3649 1258L3652 1253L3660 1254L3664 1245L3670 1241L3670 1236L3665 1231L3668 1220L3677 1223L3668 1205L3671 1196L3677 1196L3681 1189L3692 1191L3690 1199L3695 1204L3711 1200L3721 1209L3752 1205L3761 1209L3773 1208L3784 1214L3794 1212L3799 1216L3806 1210L3810 1213L3818 1208L3821 1235L3830 1250L3828 1261L3832 1257L3831 1266L3835 1275L3832 1315L3819 1314L3817 1306L3808 1300L3792 1297L3775 1307L3769 1304L3764 1325L3756 1325L3719 1341L3698 1336L3693 1343L3678 1342L3676 1352L3666 1350L3663 1356L3660 1355L3655 1368L3658 1371L3623 1390L3606 1377L3608 1362L3604 1356L3588 1357L3599 1347L3599 1342L3608 1338L3603 1325L3606 1318L3624 1308L3620 1299L3600 1287L3590 1289L3585 1296L3574 1297L3571 1307L3554 1315L3549 1322L3551 1326L3547 1323L3539 1325L3528 1338L3522 1335L3518 1343L3510 1338L3498 1343L3491 1328L3486 1333L3468 1335L3456 1321L3462 1317L3463 1306L3469 1303L3474 1289L3465 1279L3459 1279L3461 1265L3452 1259L3452 1251L3466 1238L3461 1230L3467 1211L3476 1201L3468 1199L3481 1193L3479 1200L3487 1201L3498 1211L3503 1208L3514 1212L3521 1204L3524 1207L3524 1203L3530 1200L3533 1202L3544 1189L3549 1189L3550 1179L3578 1174L3600 1163Z"/><path class="uf" d="M3605 1291L3620 1299L3624 1308L3606 1318L3603 1325L3608 1338L3599 1342L3599 1347L3588 1357L3604 1356L3608 1362L3606 1377L3623 1390L3658 1371L3655 1368L3660 1355L3663 1356L3666 1350L3676 1352L3678 1342L3693 1343L3698 1336L3719 1341L3756 1325L3764 1325L3769 1304L3775 1307L3792 1297L3808 1300L3817 1306L3819 1314L3831 1314L3834 1322L3830 1329L3831 1361L3821 1385L3815 1417L3809 1424L3801 1451L3770 1441L3743 1452L3739 1445L3729 1445L3707 1456L3708 1462L3693 1470L3697 1477L3677 1481L3660 1494L3652 1487L3635 1487L3627 1498L3612 1484L3606 1488L3603 1482L3600 1484L3592 1469L3577 1463L3575 1457L3566 1457L3560 1462L3555 1459L3549 1446L3542 1449L3541 1458L3528 1475L3517 1477L3503 1493L3495 1474L3497 1462L3495 1459L3486 1464L3479 1460L3475 1455L3479 1445L3470 1443L3464 1459L3457 1446L3449 1439L3434 1440L3426 1434L3413 1429L3407 1431L3402 1417L3392 1413L3370 1426L3362 1426L3362 1440L3343 1443L3345 1453L3337 1465L3320 1471L3308 1466L3300 1495L3297 1498L3292 1495L3287 1502L3281 1501L3272 1508L3257 1505L3260 1491L3266 1488L3268 1476L3253 1468L3243 1444L3234 1444L3232 1439L3224 1435L3225 1430L3209 1434L3201 1431L3215 1425L3236 1400L3243 1405L3246 1396L3252 1398L3257 1385L3276 1374L3280 1344L3267 1336L3270 1321L3264 1307L3280 1299L3302 1297L3309 1303L3336 1299L3341 1294L3365 1291L3398 1314L3402 1321L3399 1326L3416 1332L3420 1346L3427 1341L3432 1344L3435 1336L3457 1322L3468 1335L3486 1333L3491 1328L3498 1343L3510 1338L3518 1343L3522 1335L3528 1338L3539 1325L3547 1323L3551 1326L3549 1322L3554 1315L3571 1307L3574 1297L3585 1296L3596 1287L3605 1291Z"/><path class="uf" d="M3165 841L3179 851L3205 852L3211 860L3211 869L3195 897L3207 909L3200 917L3203 928L3213 931L3207 943L3215 954L3211 964L3225 964L3222 972L3227 977L3223 983L3224 993L3212 1017L3219 1027L3212 1036L3216 1038L3212 1047L3215 1054L3223 1058L3223 1065L3243 1078L3244 1101L3241 1102L3245 1122L3242 1127L3248 1157L3245 1164L3257 1192L3256 1211L3262 1225L3286 1233L3291 1241L3297 1240L3291 1246L3293 1260L3285 1272L3280 1299L3264 1307L3270 1321L3267 1336L3280 1344L3276 1374L3257 1385L3253 1396L3246 1396L3243 1405L3236 1400L3215 1425L3199 1431L3183 1456L3166 1461L3165 1469L3155 1484L3147 1488L3137 1485L3116 1489L3092 1509L3083 1510L3079 1514L3070 1513L3065 1522L3060 1522L3058 1515L3048 1512L3045 1501L3037 1502L3031 1497L3016 1502L3001 1487L2996 1486L2968 1504L2961 1515L2967 1536L2980 1544L2974 1551L2979 1560L2976 1568L2969 1568L2967 1578L2954 1602L2943 1602L2939 1618L2934 1623L2921 1622L2914 1615L2898 1625L2890 1623L2882 1629L2882 1636L2874 1638L2864 1650L2856 1653L2842 1644L2826 1642L2807 1622L2806 1611L2811 1605L2795 1580L2794 1572L2779 1576L2779 1583L2773 1587L2758 1586L2757 1582L2765 1571L2768 1554L2766 1547L2770 1537L2768 1516L2774 1508L2770 1497L2763 1494L2763 1479L2753 1453L2759 1438L2776 1421L2773 1418L2779 1401L2793 1376L2802 1335L2817 1318L2857 1307L2867 1296L2880 1299L2892 1283L2909 1272L2917 1272L2921 1260L2941 1237L2950 1234L2953 1237L2974 1230L3002 1244L3019 1237L3043 1235L3050 1227L3059 1194L3056 1193L3056 1183L3035 1165L3038 1159L3033 1150L3033 1123L3039 1119L3046 1105L3059 1095L3062 1078L3057 1054L3048 1039L3050 1034L3047 1029L3057 1008L3054 1001L3046 998L3044 983L3053 976L3060 959L3069 951L3075 939L3074 928L3091 905L3095 909L3107 903L3120 904L3130 890L3126 888L3139 884L3156 862L3159 857L3152 847L3154 837L3157 834L3165 841Z"/><path class="uf" d="M2167 2813L2186 2823L2197 2822L2201 2827L2209 2826L2216 2830L2227 2825L2244 2827L2255 2835L2281 2840L2290 2849L2289 2854L2295 2856L2303 2850L2318 2855L2330 2850L2334 2855L2349 2855L2362 2850L2367 2853L2368 2850L2369 2856L2376 2860L2375 2865L2393 2871L2403 2889L2402 2895L2406 2897L2403 2900L2408 2903L2402 2911L2405 2914L2404 2924L2410 2930L2409 2942L2404 2945L2414 2953L2422 2969L2431 2974L2429 2981L2436 2991L2444 2994L2433 3016L2434 3027L2458 3028L2463 3023L2467 3028L2480 3026L2485 3030L2494 3027L2496 3031L2504 3027L2512 3034L2506 3041L2502 3060L2506 3068L2509 3070L2520 3058L2528 3064L2528 3067L2535 3058L2545 3074L2542 3080L2549 3085L2557 3083L2540 3106L2530 3109L2533 3111L2531 3117L2517 3125L2505 3146L2503 3158L2446 3160L2427 3176L2419 3176L2410 3184L2393 3177L2383 3165L2372 3161L2369 3166L2367 3161L2366 3164L2358 3162L2355 3166L2350 3162L2349 3168L2342 3163L2334 3168L2335 3173L2322 3163L2313 3164L2311 3160L2309 3164L2313 3165L2306 3166L2296 3180L2297 3184L2290 3183L2286 3187L2283 3184L2280 3189L2276 3183L2275 3188L2270 3183L2262 3183L2260 3187L2246 3192L2241 3202L2245 3206L2248 3222L2232 3226L2230 3232L2221 3218L2186 3220L2172 3217L2155 3204L2115 3201L2102 3194L2078 3195L2068 3199L2050 3185L2024 3189L2015 3185L2014 3179L2005 3172L2006 3164L1996 3157L1997 3139L1991 3122L1985 3121L1984 3124L1979 3117L1973 3116L1971 3122L1971 3109L1960 3114L1963 3118L1958 3116L1956 3120L1953 3116L1944 3119L1939 3129L1932 3121L1923 3119L1921 3105L1939 3076L1936 3069L1938 3055L1949 3026L1949 3007L1955 2996L1947 2973L1971 2955L1982 2906L2002 2897L2006 2892L2015 2872L2018 2855L2079 2817L2106 2823L2117 2817L2125 2823L2149 2821L2152 2827L2158 2824L2161 2812L2167 2813Z"/><path class="uf" d="M2897 2889L2889 2896L2884 2893L2876 2897L2862 2885L2862 2878L2868 2873L2869 2860L2898 2845L2901 2848L2920 2843L2922 2836L2931 2828L2924 2820L2912 2821L2909 2817L2897 2824L2885 2821L2869 2799L2882 2798L2904 2785L2923 2787L2936 2777L2969 2766L2972 2770L2986 2765L2988 2769L3009 2760L3019 2761L3030 2763L3029 2771L3036 2769L3054 2756L3113 2731L3104 2722L3115 2709L3111 2706L3121 2685L3119 2678L3132 2664L3125 2657L3142 2654L3146 2639L3151 2637L3163 2641L3167 2647L3167 2672L3209 2684L3227 2682L3240 2690L3229 2711L3235 2721L3237 2760L3216 2773L3169 2790L3143 2813L3139 2821L3141 2832L3146 2837L3152 2835L3136 2850L3138 2860L3132 2856L3089 2853L3038 2858L3030 2854L3033 2853L3030 2848L3040 2834L3040 2829L3034 2828L3020 2834L3015 2840L3028 2851L3025 2859L3000 2862L2989 2868L2989 2865L2974 2866L2987 2864L2968 2852L2960 2852L2962 2850L2946 2854L2942 2858L2942 2854L2935 2862L2927 2865L2922 2865L2925 2862L2922 2860L2912 2862L2917 2856L2914 2856L2915 2853L2911 2852L2909 2857L2906 2854L2904 2862L2879 2868L2877 2883L2884 2879L2886 2882L2879 2885L2887 2883L2883 2890L2892 2883L2890 2887L2897 2889Z"/><path class="uf" d="M3608 1054L3626 1052L3652 1069L3672 1066L3704 1070L3721 1064L3768 1076L3790 1108L3798 1147L3805 1161L3806 1178L3812 1184L3818 1209L3810 1213L3806 1210L3799 1216L3794 1212L3784 1214L3773 1208L3761 1209L3752 1205L3721 1209L3711 1200L3695 1204L3690 1199L3692 1191L3681 1189L3677 1196L3671 1196L3668 1205L3677 1223L3668 1220L3665 1231L3670 1236L3670 1241L3664 1245L3660 1254L3652 1253L3649 1258L3645 1254L3648 1244L3645 1244L3638 1233L3626 1239L3622 1231L3600 1242L3595 1229L3575 1231L3576 1215L3584 1211L3587 1192L3606 1177L3605 1165L3598 1163L3578 1174L3550 1179L3549 1189L3544 1189L3533 1202L3530 1200L3524 1203L3524 1207L3521 1204L3514 1212L3503 1208L3498 1211L3487 1201L3479 1200L3481 1193L3470 1195L3470 1188L3482 1168L3487 1165L3490 1169L3499 1167L3514 1149L3521 1133L3517 1133L3518 1127L3535 1110L3560 1053L3598 1043L3608 1054Z"/><path class="uf" d="M777 1548L765 1550L743 1541L746 1535L773 1523L783 1510L782 1501L791 1504L824 1501L841 1519L848 1516L852 1505L860 1501L876 1507L874 1492L880 1494L894 1486L898 1489L900 1503L908 1503L924 1486L926 1464L933 1459L955 1462L983 1453L984 1460L1000 1455L1000 1434L1012 1432L1016 1419L1019 1421L1022 1418L1017 1409L1020 1405L1016 1402L1020 1393L1027 1389L1036 1392L1051 1357L1124 1358L1141 1369L1141 1377L1153 1388L1157 1398L1162 1394L1172 1399L1175 1420L1180 1424L1181 1418L1189 1419L1188 1424L1195 1440L1204 1440L1209 1448L1217 1447L1221 1445L1223 1433L1229 1435L1235 1429L1243 1432L1246 1439L1253 1442L1259 1452L1250 1469L1253 1484L1243 1487L1244 1496L1251 1499L1248 1507L1253 1510L1251 1511L1258 1523L1255 1529L1249 1532L1253 1534L1255 1546L1246 1575L1251 1580L1251 1591L1259 1602L1256 1629L1258 1640L1255 1639L1251 1659L1356 1659L1358 1664L1367 1671L1372 1666L1381 1671L1402 1671L1408 1700L1390 1719L1390 1744L1402 1751L1403 1763L1410 1772L1411 1785L1422 1794L1415 1808L1407 1809L1394 1822L1393 1848L1389 1856L1382 1857L1373 1868L1375 1874L1365 1890L1363 1905L1340 1917L1332 1929L1316 1922L1311 1914L1303 1915L1303 1909L1285 1914L1275 1908L1259 1915L1248 1909L1223 1915L1218 1903L1210 1901L1196 1886L1196 1876L1191 1871L1189 1875L1187 1871L1181 1876L1170 1873L1164 1866L1149 1864L1145 1857L1137 1862L1132 1861L1121 1846L1110 1844L1103 1832L1105 1829L1096 1821L1088 1829L1082 1828L1068 1821L1069 1817L1062 1817L1051 1807L1035 1803L1025 1805L1024 1811L1018 1813L1001 1808L998 1811L998 1807L992 1806L986 1810L986 1806L975 1805L966 1796L965 1783L945 1777L946 1769L941 1776L940 1770L934 1772L936 1765L933 1761L915 1759L916 1749L911 1747L909 1731L900 1732L900 1736L893 1731L897 1725L897 1713L888 1710L885 1695L890 1692L885 1691L883 1685L887 1680L883 1674L890 1669L889 1663L893 1659L891 1647L882 1639L884 1629L878 1622L876 1608L890 1582L886 1556L890 1544L881 1530L875 1527L864 1544L857 1543L853 1538L849 1541L851 1535L846 1538L843 1533L841 1539L840 1536L835 1539L834 1535L829 1535L824 1540L806 1539L801 1543L791 1543L780 1550L777 1548Z"/><path class="uf" d="M1409 245L1402 267L1402 291L1411 312L1411 324L1427 332L1425 374L1432 376L1433 373L1431 384L1445 388L1473 421L1499 430L1505 428L1508 434L1507 534L1397 534L1395 544L1389 547L1387 557L1381 563L1379 574L1372 581L1373 589L1362 611L1371 631L1354 637L1349 647L1344 645L1336 649L1328 646L1327 636L1313 622L1312 616L1300 615L1296 610L1283 610L1282 616L1263 623L1252 636L1248 654L1251 666L1243 690L1248 695L1244 699L1252 703L1258 713L1257 718L1243 703L1228 698L1217 700L1204 672L1158 636L1160 628L1168 633L1179 625L1178 611L1189 593L1183 590L1184 577L1177 570L1174 557L1166 551L1162 532L1164 522L1156 509L1156 491L1163 481L1162 451L1156 451L1146 417L1130 401L1138 389L1139 366L1126 358L1109 359L1101 352L1097 343L1084 345L1076 340L1070 324L1072 316L1042 322L1009 310L1016 295L1015 283L1007 266L992 249L994 241L990 219L996 204L986 190L967 181L936 142L935 134L939 131L947 135L960 150L986 146L998 147L1018 173L1028 165L1045 169L1045 158L1054 171L1063 176L1064 173L1069 173L1069 162L1091 165L1089 176L1101 181L1105 185L1103 191L1115 199L1127 186L1136 191L1137 179L1131 171L1135 157L1154 158L1154 149L1165 142L1193 152L1200 145L1209 142L1214 150L1215 144L1224 144L1229 135L1250 135L1255 128L1254 119L1276 114L1273 106L1283 107L1290 112L1295 108L1304 108L1311 101L1309 95L1314 88L1329 84L1343 67L1337 44L1331 38L1359 42L1380 33L1384 37L1388 35L1391 46L1401 52L1402 61L1398 90L1393 99L1385 103L1385 109L1421 113L1432 123L1427 132L1427 142L1438 147L1435 153L1442 160L1441 163L1447 166L1440 172L1440 180L1432 184L1433 190L1414 202L1420 209L1416 217L1419 225L1409 245Z"/><path class="uf" d="M2169 3717L2163 3715L2163 3723L2168 3720L2167 3728L2154 3733L2152 3744L2149 3745L2151 3749L2161 3752L2163 3763L2167 3763L2164 3776L2144 3796L2113 3872L2097 3890L2062 3919L2037 3935L2034 3930L2026 3929L2025 3921L2027 3914L2033 3917L2035 3903L2031 3886L2035 3876L2046 3865L2046 3869L2052 3870L2061 3857L2065 3839L2070 3843L2078 3833L2077 3839L2087 3849L2093 3851L2101 3846L2117 3813L2106 3792L2113 3774L2102 3777L2099 3780L2103 3781L2097 3787L2094 3794L2103 3799L2097 3804L2081 3809L2077 3820L2069 3826L2039 3819L2032 3808L2023 3807L2015 3798L2015 3790L2005 3768L1996 3765L1995 3760L1983 3752L1976 3750L1970 3753L1936 3725L1936 3720L1924 3706L1899 3704L1894 3698L1890 3698L1883 3687L1876 3693L1861 3686L1856 3674L1851 3673L1850 3664L1841 3660L1828 3643L1820 3647L1819 3655L1814 3654L1800 3667L1786 3668L1788 3646L1785 3639L1775 3634L1771 3621L1750 3610L1743 3599L1734 3596L1735 3591L1727 3590L1725 3580L1712 3576L1709 3570L1684 3569L1669 3589L1660 3586L1652 3590L1645 3586L1640 3589L1636 3586L1637 3581L1628 3579L1644 3572L1657 3560L1664 3542L1679 3536L1694 3524L1713 3498L1719 3496L1730 3472L1747 3467L1747 3458L1758 3450L1760 3439L1769 3437L1787 3420L1786 3411L1798 3408L1799 3396L1812 3397L1816 3403L1819 3393L1809 3384L1823 3378L1825 3372L1830 3376L1836 3368L1841 3370L1848 3363L1847 3358L1865 3346L1871 3350L1873 3345L1881 3345L1876 3338L1890 3337L1893 3324L1898 3322L1902 3313L1905 3319L1914 3317L1915 3310L1920 3314L1924 3305L1929 3311L1937 3307L1935 3303L1940 3300L1947 3307L1948 3300L1953 3305L1960 3298L1964 3285L1965 3290L1973 3290L1979 3280L1984 3279L1985 3275L1990 3277L1992 3273L1998 3277L2002 3275L2004 3279L2012 3276L2015 3282L2022 3277L2029 3280L2028 3274L2037 3274L2041 3269L2048 3273L2047 3282L2053 3277L2059 3279L2061 3274L2064 3278L2070 3276L2069 3270L2074 3268L2073 3275L2077 3274L2079 3282L2081 3276L2084 3280L2091 3277L2092 3281L2100 3282L2100 3286L2104 3284L2106 3288L2109 3284L2127 3286L2130 3282L2137 3290L2145 3292L2144 3286L2149 3286L2147 3290L2153 3293L2157 3287L2157 3291L2163 3291L2164 3295L2172 3293L2171 3296L2178 3298L2173 3300L2180 3303L2178 3307L2183 3306L2184 3312L2187 3308L2188 3313L2193 3313L2193 3309L2200 3311L2204 3308L2207 3312L2209 3309L2209 3314L2214 3312L2215 3318L2223 3316L2228 3325L2233 3322L2247 3338L2262 3343L2269 3356L2277 3357L2283 3374L2291 3374L2290 3380L2306 3399L2315 3403L2332 3402L2333 3406L2343 3403L2351 3410L2354 3403L2357 3408L2369 3404L2372 3408L2380 3404L2382 3410L2389 3406L2396 3422L2388 3421L2379 3434L2376 3431L2373 3433L2370 3447L2373 3447L2370 3452L2374 3458L2366 3467L2371 3469L2365 3473L2365 3478L2357 3476L2358 3482L2353 3479L2350 3485L2363 3495L2355 3486L2372 3480L2394 3493L2365 3537L2334 3610L2292 3671L2246 3717L2184 3756L2165 3776L2168 3758L2172 3754L2164 3744L2173 3742L2188 3747L2194 3741L2186 3740L2206 3737L2223 3717L2228 3722L2225 3716L2229 3708L2235 3713L2247 3706L2255 3688L2254 3667L2260 3670L2272 3664L2273 3650L2279 3651L2294 3642L2299 3635L2300 3610L2296 3597L2299 3595L2306 3599L2306 3593L2309 3600L2303 3604L2311 3608L2315 3587L2309 3579L2303 3580L2302 3590L2291 3588L2292 3593L2277 3593L2277 3604L2265 3599L2267 3587L2262 3584L2255 3586L2251 3579L2246 3579L2248 3574L2244 3570L2248 3564L2245 3565L2241 3560L2238 3583L2244 3585L2242 3590L2246 3593L2250 3590L2252 3598L2261 3598L2256 3607L2252 3601L2245 3607L2241 3619L2241 3635L2239 3625L2233 3625L2231 3638L2234 3647L2222 3651L2227 3669L2210 3674L2210 3687L2194 3687L2187 3693L2186 3689L2185 3692L2181 3691L2174 3701L2170 3729L2169 3717Z"/><path class="uf" d="M2007 3216L2008 3199L2015 3185L2029 3190L2041 3184L2050 3185L2068 3199L2078 3195L2102 3194L2115 3201L2155 3204L2172 3217L2186 3220L2221 3218L2230 3232L2232 3226L2248 3222L2245 3206L2241 3202L2246 3192L2260 3187L2262 3183L2270 3183L2275 3188L2276 3183L2280 3189L2283 3184L2286 3187L2290 3183L2297 3184L2296 3180L2306 3166L2313 3165L2309 3164L2311 3160L2313 3164L2322 3163L2335 3173L2334 3168L2342 3163L2349 3168L2350 3162L2355 3166L2358 3162L2366 3164L2367 3161L2369 3166L2372 3161L2383 3165L2393 3177L2410 3184L2419 3176L2427 3176L2446 3160L2458 3162L2467 3158L2498 3156L2502 3158L2504 3176L2509 3176L2512 3182L2496 3218L2494 3233L2496 3237L2503 3238L2498 3250L2500 3260L2505 3261L2502 3272L2507 3276L2511 3271L2515 3274L2513 3281L2510 3282L2509 3278L2500 3285L2502 3292L2508 3290L2509 3293L2497 3308L2505 3320L2498 3324L2502 3326L2504 3349L2500 3355L2502 3363L2496 3378L2497 3383L2486 3406L2488 3411L2482 3421L2435 3448L2394 3493L2370 3480L2355 3486L2360 3494L2352 3489L2352 3480L2358 3484L2357 3476L2365 3478L2365 3473L2370 3472L2372 3466L2366 3467L2374 3458L2370 3452L2373 3447L2370 3447L2373 3433L2376 3431L2379 3434L2388 3421L2396 3422L2389 3406L2382 3410L2380 3404L2372 3408L2369 3404L2357 3408L2354 3403L2351 3410L2343 3403L2333 3406L2332 3402L2315 3403L2306 3399L2290 3380L2291 3374L2283 3374L2277 3357L2269 3356L2262 3343L2247 3338L2233 3322L2228 3325L2223 3316L2215 3318L2214 3312L2209 3314L2209 3309L2207 3312L2204 3308L2200 3311L2193 3309L2193 3313L2188 3313L2187 3308L2184 3312L2183 3306L2178 3307L2180 3303L2173 3300L2178 3298L2171 3296L2172 3293L2164 3295L2163 3291L2157 3291L2157 3287L2153 3293L2147 3290L2149 3286L2144 3286L2145 3292L2137 3290L2130 3282L2127 3286L2109 3284L2106 3288L2104 3284L2100 3286L2100 3282L2092 3281L2091 3277L2084 3280L2081 3276L2079 3282L2077 3274L2073 3275L2074 3268L2069 3270L2070 3276L2064 3278L2061 3274L2059 3279L2053 3277L2047 3282L2048 3273L2041 3269L2037 3274L2028 3274L2029 3280L2022 3277L2015 3282L2012 3276L2006 3279L2002 3275L1996 3277L2000 3274L1998 3270L2002 3270L2000 3264L2004 3266L2001 3263L2005 3263L2008 3253L2012 3254L2010 3246L2013 3246L2004 3231L2008 3228L2004 3224L2007 3216ZM2520 3299L2525 3305L2511 3331L2514 3337L2505 3344L2505 3327L2509 3325L2505 3319L2511 3315L2507 3306L2520 3299Z"/><path class="uf" d="M3529 1513L3536 1514L3546 1524L3554 1523L3566 1533L3588 1539L3617 1559L3623 1558L3631 1574L3649 1586L3659 1586L3664 1592L3664 1602L3675 1601L3681 1610L3659 1619L3636 1634L3597 1689L3590 1704L3572 1715L3559 1712L3555 1716L3544 1711L3539 1703L3528 1699L3525 1689L3528 1679L3519 1675L3515 1662L3509 1658L3502 1648L3505 1631L3520 1631L3526 1636L3544 1629L3541 1615L3544 1611L3539 1603L3551 1593L3542 1560L3530 1557L3526 1552L3529 1542L3522 1535L3522 1529L3527 1525L3522 1517L3525 1511L3529 1513Z"/><path class="uf" d="M2653 1458L2650 1466L2664 1467L2663 1473L2667 1472L2673 1480L2671 1489L2679 1501L2689 1499L2692 1507L2699 1508L2701 1516L2696 1519L2690 1533L2697 1536L2697 1540L2705 1543L2709 1565L2717 1577L2733 1577L2737 1581L2750 1578L2753 1586L2765 1584L2773 1587L2779 1583L2779 1576L2782 1577L2782 1586L2778 1594L2770 1597L2770 1604L2751 1614L2747 1620L2733 1625L2734 1632L2729 1636L2731 1639L2725 1645L2726 1651L2714 1659L2707 1679L2693 1689L2707 1712L2745 1722L2738 1726L2723 1723L2724 1729L2717 1735L2722 1737L2717 1747L2736 1750L2721 1756L2714 1764L2717 1789L2722 1790L2719 1794L2728 1802L2728 1809L2738 1808L2737 1813L2726 1818L2728 1843L2723 1855L2741 1853L2718 1859L2718 1846L2713 1842L2709 1857L2680 1857L2658 1873L2642 1881L2634 1879L2629 1886L2620 1883L2615 1889L2610 1878L2602 1878L2602 1872L2595 1870L2592 1881L2596 1897L2591 1907L2577 1891L2563 1891L2554 1883L2552 1889L2544 1891L2546 1875L2543 1875L2517 1889L2514 1874L2511 1873L2503 1892L2502 1866L2489 1859L2489 1852L2477 1840L2466 1856L2456 1850L2457 1845L2452 1839L2440 1848L2429 1870L2430 1884L2427 1887L2375 1857L2338 1844L2338 1828L2341 1828L2344 1818L2348 1816L2344 1813L2346 1809L2353 1800L2331 1815L2325 1829L2320 1831L2317 1846L2309 1843L2311 1840L2306 1842L2304 1825L2299 1825L2298 1821L2302 1820L2307 1803L2304 1782L2300 1780L2301 1759L2305 1748L2300 1746L2297 1734L2303 1720L2295 1714L2295 1705L2303 1685L2303 1673L2308 1667L2306 1644L2311 1635L2308 1626L2315 1620L2321 1600L2326 1596L2329 1573L2337 1564L2356 1519L2363 1489L2375 1477L2391 1451L2406 1444L2424 1418L2427 1405L2436 1398L2446 1365L2449 1340L2432 1328L2426 1314L2445 1283L2443 1253L2461 1238L2481 1235L2496 1226L2497 1211L2511 1195L2523 1198L2518 1178L2532 1170L2527 1160L2537 1155L2531 1136L2543 1131L2547 1124L2546 1120L2528 1110L2523 1099L2503 1102L2487 1095L2494 1091L2501 1094L2508 1080L2525 1077L2542 1086L2552 1087L2559 1084L2571 1086L2575 1098L2585 1098L2608 1113L2609 1133L2615 1147L2615 1172L2620 1187L2608 1227L2605 1258L2594 1274L2587 1274L2584 1280L2594 1290L2599 1286L2608 1289L2609 1297L2599 1304L2608 1304L2610 1313L2615 1313L2619 1325L2622 1322L2626 1326L2626 1333L2633 1336L2633 1341L2639 1346L2652 1365L2657 1367L2669 1356L2695 1350L2705 1358L2708 1367L2700 1392L2692 1392L2675 1400L2676 1405L2664 1420L2667 1429L2663 1433L2665 1445L2657 1448L2659 1451L2653 1458Z"/><path class="uf" d="M2626 2164L2533 2165L2535 2154L2532 2144L2540 2134L2536 2131L2541 2110L2616 2110L2616 2115L2626 2119L2620 2158L2626 2164Z"/><path class="uf uf-sp" d="M2740 2946L2741 2946L2739 2947L2740 2949L2736 2952L2736 2954L2737 2954L2735 2957L2735 2959L2733 2960L2732 2959L2729 2959L2726 2962L2725 2964L2725 2963L2724 2962L2723 2963L2722 2962L2722 2960L2723 2959L2723 2958L2720 2957L2717 2957L2717 2958L2717 2957L2716 2957L2717 2959L2715 2960L2716 2962L2714 2963L2714 2962L2713 2961L2705 2964L2684 2974L2662 2988L2656 2993L2656 2995L2655 2998L2656 3000L2655 3001L2649 3004L2643 3009L2634 3016L2634 3017L2617 3026L2614 3030L2605 3034L2597 3039L2575 3057L2572 3061L2571 3065L2568 3065L2570 3071L2568 3075L2568 3076L2557 3084L2550 3091L2551 3089L2557 3083L2557 3082L2555 3083L2554 3082L2554 3084L2549 3085L2542 3080L2541 3079L2543 3078L2545 3074L2542 3073L2539 3068L2540 3063L2537 3062L2538 3061L2535 3058L2535 3060L2534 3060L2533 3063L2531 3062L2528 3067L2528 3064L2526 3064L2525 3062L2523 3060L2520 3058L2514 3061L2513 3065L2512 3066L2509 3070L2506 3068L2505 3065L2503 3065L2502 3060L2505 3057L2504 3055L2505 3054L2504 3049L2506 3050L2507 3047L2505 3046L2505 3045L2506 3041L2510 3038L2512 3034L2508 3034L2505 3030L2504 3027L2503 3028L2500 3027L2496 3029L2496 3031L2494 3030L2494 3027L2493 3027L2493 3029L2492 3028L2487 3029L2487 3028L2485 3030L2480 3026L2479 3026L2477 3026L2478 3027L2476 3027L2473 3027L2471 3028L2468 3027L2467 3028L2464 3026L2462 3026L2463 3023L2459 3024L2460 3024L2460 3026L2458 3028L2456 3028L2455 3027L2455 3028L2453 3028L2452 3029L2450 3028L2445 3027L2443 3029L2443 3030L2437 3029L2434 3027L2433 3026L2434 3025L2433 3024L2433 3022L2433 3020L2434 3020L2433 3019L2433 3016L2434 3015L2435 3015L2436 3014L2435 3010L2437 3009L2438 3007L2439 3007L2439 3003L2440 3001L2440 3000L2439 3001L2439 3001L2444 2994L2439 2993L2439 2992L2436 2991L2434 2989L2434 2985L2429 2981L2430 2980L2431 2974L2427 2971L2426 2972L2424 2971L2424 2970L2422 2969L2422 2967L2419 2965L2418 2963L2417 2962L2416 2962L2416 2961L2417 2961L2415 2959L2415 2958L2413 2957L2415 2956L2415 2955L2413 2955L2412 2953L2414 2954L2414 2953L2413 2952L2412 2953L2409 2952L2410 2951L2407 2950L2408 2948L2407 2949L2405 2947L2405 2946L2404 2945L2406 2945L2404 2944L2406 2944L2406 2943L2409 2942L2409 2939L2408 2938L2409 2936L2408 2935L2409 2933L2410 2934L2410 2930L2409 2928L2407 2928L2407 2926L2404 2924L2405 2922L2403 2921L2405 2918L2404 2916L2405 2914L2402 2911L2404 2911L2403 2909L2404 2907L2405 2908L2405 2905L2406 2904L2407 2904L2408 2904L2408 2903L2407 2903L2407 2901L2405 2901L2405 2899L2403 2900L2403 2899L2406 2898L2404 2895L2402 2895L2403 2893L2402 2890L2403 2889L2401 2885L2400 2881L2397 2877L2398 2876L2396 2876L2395 2875L2395 2876L2393 2874L2393 2871L2392 2870L2387 2870L2383 2867L2379 2867L2375 2865L2375 2864L2376 2860L2371 2858L2369 2856L2370 2853L2368 2850L2367 2850L2367 2853L2365 2851L2362 2850L2360 2853L2359 2852L2356 2854L2352 2853L2349 2855L2344 2855L2343 2854L2340 2853L2336 2855L2334 2855L2332 2852L2330 2850L2326 2851L2325 2854L2319 2854L2318 2855L2316 2853L2314 2851L2311 2850L2308 2852L2303 2850L2301 2850L2298 2855L2295 2856L2293 2855L2290 2855L2289 2854L2290 2849L2288 2848L2285 2843L2281 2840L2275 2840L2274 2839L2270 2839L2264 2837L2255 2835L2247 2831L2244 2827L2240 2827L2234 2826L2231 2827L2229 2825L2227 2825L2222 2829L2219 2829L2216 2830L2209 2826L2201 2827L2199 2822L2197 2822L2195 2821L2188 2823L2186 2823L2179 2817L2174 2815L2168 2814L2163 2812L2161 2812L2159 2815L2158 2820L2158 2824L2152 2827L2151 2824L2149 2821L2144 2824L2138 2823L2131 2821L2125 2823L2121 2821L2117 2817L2106 2823L2095 2820L2090 2821L2084 2817L2079 2817L2068 2826L2066 2820L2069 2816L2071 2814L2075 2812L2077 2809L2091 2804L2096 2798L2106 2791L2110 2790L2117 2785L2126 2782L2134 2774L2140 2766L2144 2755L2155 2745L2158 2737L2163 2734L2166 2731L2169 2724L2167 2720L2163 2716L2166 2711L2168 2710L2174 2712L2176 2710L2180 2706L2182 2698L2186 2695L2188 2687L2185 2680L2185 2674L2190 2673L2194 2670L2195 2665L2200 2658L2201 2657L2206 2657L2210 2653L2211 2649L2209 2645L2210 2638L2209 2635L2213 2623L2222 2617L2225 2610L2230 2606L2237 2596L2241 2593L2255 2590L2263 2585L2270 2568L2273 2563L2275 2563L2279 2559L2282 2559L2291 2554L2303 2550L2311 2542L2318 2540L2321 2538L2327 2540L2332 2546L2343 2548L2347 2547L2351 2548L2357 2548L2362 2552L2365 2553L2370 2552L2377 2554L2381 2555L2382 2553L2388 2552L2401 2553L2410 2551L2415 2552L2416 2555L2421 2558L2429 2559L2434 2556L2438 2556L2439 2557L2439 2560L2436 2560L2435 2562L2433 2570L2434 2577L2440 2589L2442 2590L2446 2591L2451 2587L2457 2575L2460 2575L2464 2576L2466 2581L2467 2586L2466 2599L2473 2604L2475 2603L2476 2600L2475 2595L2475 2591L2474 2589L2474 2587L2477 2583L2477 2578L2480 2576L2484 2576L2489 2575L2497 2577L2504 2573L2512 2574L2521 2571L2524 2572L2529 2571L2532 2574L2536 2574L2539 2573L2539 2571L2535 2568L2536 2563L2539 2563L2542 2567L2542 2570L2549 2574L2553 2575L2555 2574L2556 2572L2558 2572L2561 2567L2561 2564L2562 2563L2565 2566L2566 2571L2570 2572L2573 2565L2572 2563L2573 2559L2576 2560L2579 2558L2584 2559L2588 2558L2595 2565L2599 2563L2600 2560L2607 2558L2611 2556L2615 2561L2613 2563L2614 2565L2617 2568L2620 2568L2622 2570L2626 2572L2628 2575L2630 2576L2632 2577L2632 2579L2634 2582L2633 2586L2630 2589L2628 2595L2629 2600L2628 2603L2629 2603L2628 2605L2636 2610L2641 2612L2644 2619L2644 2619L2644 2621L2646 2622L2645 2624L2647 2624L2647 2626L2645 2631L2640 2630L2638 2633L2639 2634L2638 2637L2636 2638L2635 2640L2636 2643L2633 2648L2635 2651L2638 2653L2638 2654L2642 2658L2641 2662L2643 2667L2643 2669L2645 2670L2643 2673L2645 2675L2645 2679L2647 2681L2650 2681L2649 2684L2651 2685L2652 2689L2653 2690L2653 2691L2654 2692L2655 2694L2657 2695L2655 2700L2655 2702L2658 2703L2661 2702L2664 2703L2672 2699L2672 2697L2676 2697L2679 2696L2680 2698L2682 2699L2683 2699L2685 2700L2689 2696L2690 2696L2690 2699L2693 2702L2694 2704L2695 2704L2697 2703L2699 2704L2703 2705L2704 2707L2702 2712L2705 2715L2703 2718L2703 2721L2700 2724L2700 2725L2698 2726L2698 2728L2697 2728L2693 2728L2692 2730L2693 2732L2692 2734L2692 2737L2690 2738L2690 2739L2686 2744L2689 2745L2689 2748L2690 2748L2688 2751L2688 2753L2694 2761L2693 2762L2690 2761L2687 2763L2688 2765L2689 2766L2689 2767L2683 2768L2685 2769L2690 2769L2693 2771L2693 2773L2695 2773L2694 2775L2691 2776L2691 2778L2688 2778L2687 2782L2686 2784L2686 2785L2684 2786L2685 2790L2683 2791L2685 2792L2686 2794L2688 2797L2689 2797L2689 2801L2692 2804L2697 2804L2698 2805L2699 2805L2700 2807L2702 2807L2701 2809L2704 2811L2704 2812L2705 2811L2706 2812L2709 2812L2712 2815L2714 2814L2711 2817L2712 2818L2713 2819L2712 2820L2714 2822L2712 2822L2712 2823L2715 2825L2715 2826L2714 2827L2713 2826L2708 2827L2707 2828L2707 2829L2707 2830L2709 2831L2709 2833L2716 2834L2718 2836L2721 2836L2718 2839L2717 2843L2717 2846L2716 2847L2718 2850L2720 2850L2722 2849L2724 2850L2727 2848L2728 2849L2730 2849L2730 2848L2734 2846L2739 2846L2740 2849L2738 2851L2739 2852L2744 2849L2752 2849L2754 2847L2759 2844L2762 2842L2763 2844L2764 2848L2766 2847L2768 2844L2770 2843L2772 2843L2773 2846L2776 2844L2775 2841L2777 2839L2778 2839L2778 2841L2781 2841L2779 2840L2781 2837L2779 2832L2776 2832L2773 2834L2770 2832L2771 2830L2773 2829L2778 2826L2780 2826L2782 2825L2778 2821L2780 2818L2782 2819L2784 2817L2786 2818L2786 2820L2784 2824L2785 2825L2790 2824L2794 2820L2796 2823L2793 2825L2797 2825L2801 2823L2802 2823L2804 2820L2803 2819L2804 2819L2807 2822L2810 2822L2810 2825L2811 2825L2817 2822L2823 2822L2824 2821L2824 2818L2832 2815L2834 2812L2837 2810L2847 2806L2847 2807L2850 2807L2853 2807L2855 2805L2859 2805L2860 2803L2862 2802L2866 2803L2868 2801L2868 2800L2873 2801L2875 2803L2877 2806L2876 2808L2878 2810L2877 2811L2878 2811L2880 2813L2881 2814L2881 2816L2882 2815L2884 2816L2884 2820L2885 2821L2886 2821L2887 2822L2888 2821L2890 2823L2891 2820L2892 2821L2893 2821L2895 2822L2894 2824L2896 2823L2897 2824L2899 2821L2901 2822L2905 2820L2907 2821L2908 2820L2907 2819L2909 2817L2911 2818L2910 2819L2912 2821L2913 2819L2918 2820L2919 2821L2920 2820L2922 2821L2924 2820L2925 2822L2926 2821L2926 2823L2928 2824L2928 2825L2930 2827L2929 2831L2926 2832L2927 2833L2924 2833L2923 2836L2922 2836L2921 2839L2923 2839L2922 2840L2921 2840L2920 2843L2919 2844L2917 2843L2915 2844L2915 2844L2910 2846L2906 2845L2901 2848L2900 2847L2900 2845L2898 2845L2894 2848L2892 2849L2890 2848L2887 2849L2882 2853L2881 2852L2880 2854L2877 2853L2874 2855L2873 2858L2870 2858L2867 2869L2868 2870L2867 2871L2868 2873L2866 2874L2866 2876L2862 2878L2860 2882L2862 2885L2865 2886L2866 2889L2868 2888L2870 2890L2871 2894L2876 2897L2870 2898L2870 2897L2865 2899L2865 2897L2864 2896L2862 2896L2860 2897L2861 2894L2858 2893L2857 2895L2855 2896L2854 2898L2852 2900L2850 2900L2848 2902L2846 2901L2845 2903L2844 2902L2844 2902L2843 2904L2844 2906L2846 2905L2846 2906L2848 2906L2843 2907L2842 2912L2841 2910L2839 2910L2839 2909L2838 2910L2839 2911L2839 2912L2839 2913L2835 2910L2833 2909L2834 2914L2832 2914L2831 2912L2827 2914L2827 2915L2829 2916L2829 2918L2824 2920L2824 2919L2823 2919L2822 2917L2821 2917L2817 2919L2815 2922L2813 2922L2812 2923L2810 2922L2808 2926L2808 2928L2809 2933L2811 2933L2810 2935L2811 2938L2810 2942L2808 2943L2805 2942L2800 2944L2800 2943L2798 2943L2798 2942L2796 2941L2795 2939L2789 2940L2789 2939L2787 2938L2785 2939L2785 2937L2783 2938L2782 2937L2775 2936L2772 2937L2771 2936L2768 2936L2755 2939L2753 2940L2750 2941L2749 2943L2748 2942L2746 2942L2741 2944L2740 2946ZM2818 2951L2808 2954L2805 2951L2805 2949L2814 2941L2816 2934L2818 2932L2824 2934L2825 2936L2827 2938L2826 2942L2826 2942L2826 2944L2827 2944L2823 2944L2821 2947L2824 2947L2823 2948L2823 2949L2826 2950L2826 2949L2828 2950L2826 2951L2827 2954L2828 2954L2825 2957L2824 2956L2822 2954L2822 2953L2821 2951L2818 2951ZM2842 2914L2843 2914L2844 2913L2846 2913L2842 2916L2842 2914ZM2836 2940L2838 2941L2838 2942L2837 2941L2835 2942L2834 2941L2835 2939L2836 2939L2836 2940ZM2834 2917L2834 2916L2835 2917L2834 2917ZM2848 2936L2849 2935L2848 2937L2848 2936ZM2774 2947L2773 2947L2774 2946L2775 2946L2774 2947ZM2821 2920L2822 2919L2822 2920L2821 2920ZM2848 2935L2847 2934L2848 2935L2848 2935Z"/></g><path class="mun mun-sn" d="M2682.6 2825.5L2683.9 2825.4L2684.1 2825.8L2685.7 2824.8L2686.4 2824.9L2687.3 2824.6L2688.0 2823.5L2688.8 2824.7L2689.4 2826.4L2689.8 2826.6L2690.8 2825.2L2692.1 2825.4L2692.9 2824.9L2693.2 2823.6L2694.2 2823.7L2694.8 2823.2L2694.0 2820.4L2693.8 2818.7L2694.5 2817.5L2694.6 2816.4L2693.6 2814.8L2692.2 2814.1L2690.7 2815.2L2689.9 2814.6L2689.0 2814.7L2688.3 2814.2L2687.9 2813.0L2687.4 2812.5L2687.2 2810.7L2684.5 2811.0L2684.1 2810.4L2683.2 2811.6L2683.3 2812.8L2682.1 2813.4L2681.7 2814.7L2681.0 2815.0L2679.4 2814.7L2678.3 2813.6L2676.3 2813.8L2675.8 2814.1L2677.1 2814.7L2677.0 2815.8L2679.8 2816.9L2680.1 2817.4L2681.5 2818.9L2681.2 2819.5L2680.5 2819.1L2679.1 2819.9L2678.9 2820.4L2679.6 2821.5L2680.3 2821.7L2679.9 2822.8L2681.1 2825.1L2682.6 2825.5Z"/><path class="mun mun-bp" d="M2685.7 2861.1L2686.6 2861.0L2687.6 2860.1L2688.8 2859.8L2689.4 2860.6L2691.4 2861.8L2692.2 2860.7L2692.9 2860.7L2692.8 2861.5L2694.9 2861.8L2696.2 2861.8L2697.7 2863.2L2698.0 2864.3L2698.6 2864.2L2699.5 2863.4L2700.6 2863.1L2701.1 2862.6L2702.2 2863.3L2702.6 2862.9L2704.8 2862.7L2705.4 2863.2L2706.5 2863.1L2708.0 2865.2L2709.1 2864.4L2709.9 2863.0L2710.8 2863.3L2711.1 2863.8L2712.0 2863.4L2711.9 2862.2L2712.3 2860.7L2713.5 2859.3L2713.8 2858.4L2713.2 2858.1L2712.7 2858.1L2711.9 2857.2L2711.8 2856.3L2710.8 2855.0L2709.6 2855.1L2709.3 2854.0L2709.5 2853.5L2708.4 2852.5L2707.9 2851.3L2708.6 2850.1L2707.2 2849.2L2706.6 2847.9L2707.0 2847.2L2708.6 2845.9L2710.0 2844.1L2710.1 2842.5L2709.5 2842.2L2707.0 2842.6L2706.4 2842.2L2704.7 2842.6L2703.4 2842.2L2702.4 2842.8L2701.9 2842.7L2701.5 2843.3L2700.2 2843.9L2699.7 2843.8L2697.7 2844.7L2696.6 2845.1L2695.3 2843.9L2694.4 2842.6L2692.6 2843.3L2691.6 2844.0L2690.9 2844.9L2691.4 2845.2L2691.2 2846.2L2690.1 2846.7L2690.4 2847.4L2690.3 2848.4L2687.9 2848.7L2687.0 2848.5L2687.2 2849.8L2686.8 2851.6L2687.2 2852.2L2687.1 2853.0L2687.5 2853.3L2686.6 2854.2L2685.5 2855.7L2684.1 2855.8L2683.3 2856.7L2683.7 2857.7L2684.5 2858.3L2685.1 2860.0L2685.0 2860.9L2685.7 2861.1Z"/></svg>
+        <div id="pins">
+          <a class="ponto on esq" data-x="2700.5" data-y="2855.3" href="/braganca/" data-goatcounter-click="cidade-braganca-mapa" data-goatcounter-title="Bragança: pino do mapa" aria-label="Abrir o Radar Bragança"><div class="pin"><i></i></div><span class="rot">Bragança Paulista<small>No ar · abrir</small></span></a>
+          <a class="ponto on dir" data-x="2685.2" data-y="2821.1" href="/serranegra/" data-goatcounter-click="cidade-serranegra-mapa" data-goatcounter-title="Serra Negra: pino do mapa" aria-label="Abrir o Radar Serra Negra"><div class="pin"><i></i></div><span class="rot">Serra Negra<small>No ar · abrir</small></span></a>
+          <div class="ponto cap esq" data-x="2691.7" data-y="2915.1"><div class="dot"></div><span class="rot">São Paulo (capital)</span></div>
+          <div class="ponto estado" data-x="2655" data-y="2888"><span class="rot">São Paulo</span></div>
+          <div class="ponto estado" data-x="2735" data-y="2805"><span class="rot">Minas Gerais</span></div>
+        </div>
+        <div class="map-leg" id="map-leg" aria-hidden="true"><span><i></i>No ar</span></div>
+        <div class="map-cap">
+          <span id="map-txt">Brasil</span>
+          <button type="button" id="map-again" hidden>↺ Ver de novo</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="fontes" aria-label="Fontes dos dados">
+      <p class="eyebrow">Fontes dos dados</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Câmaras Municipais</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Portais da Transparência</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Tribunal de Contas do Estado (TCE-SP)</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Tribunal Superior Eleitoral (TSE)</li>
+      </ul>
+    </section>
+
+    <section class="block" id="cidades" aria-labelledby="cidades-t">
+      <p class="eyebrow">Cidades</p>
+      <h2 id="cidades-t">Escolha sua cidade</h2>
+      <p class="sub">Cada cidade tem o seu Radar, com os vereadores, as propostas e as demandas dos bairros daquele município.</p>
+      <ul class="cities">
+        <li>
+          <a class="city" href="/braganca/" data-goatcounter-click="cidade-braganca-cartao" data-goatcounter-title="Bragança: cartão da cidade">
+            <div class="city-head">
+              <p class="eyebrow">Radar Bragança</p>
+              <span class="badge on"><i aria-hidden="true"></i>No ar</span>
+            </div>
+            <div class="city-title">
+              <div><h3>Bragança Paulista</h3><p class="uf">São Paulo</p></div>
+              <span class="shape bp" data-mun="mun-bp" aria-hidden="true"></span>
+            </div>
+            <p class="desc">Propostas, votações e presença de cada vereador, gastos da Prefeitura e a Voz do Bairro para registrar problemas da sua rua.</p>
+            <!-- Números lidos do arquivo que o robô gera todo dia. Se a leitura falhar, continua escondido. -->
+            <p class="stats" id="numeros-braganca" data-fonte="braganca/dados-inicio.js" hidden></p>
+            <ul class="tags" aria-label="O que tem no Radar Bragança">
+              <li>Vereadores</li><li>Propostas</li><li>Seu bairro</li><li>Prefeitura</li><li>Voz do Bairro</li>
+            </ul>
+            <span class="go">Abrir o Radar Bragança <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="city" href="/serranegra/" data-goatcounter-click="cidade-serranegra-cartao" data-goatcounter-title="Serra Negra: cartão da cidade">
+            <div class="city-head">
+              <p class="eyebrow">Radar Serra Negra</p>
+              <span class="badge on"><i aria-hidden="true"></i>No ar</span>
+            </div>
+            <div class="city-title">
+              <div><h3>Serra Negra</h3><p class="uf">São Paulo</p></div>
+              <span class="shape sn" data-mun="mun-sn" aria-hidden="true"></span>
+            </div>
+            <p class="desc">Propostas de cada vereador, pautas das sessões, votos de 2024 e gastos da Prefeitura, com os dados oficiais da Câmara Municipal de Serra Negra.</p>
+            <!-- Números lidos do arquivo que o robô gera todo dia. Se a leitura falhar, continua escondido. -->
+            <p class="stats" id="numeros-serranegra" data-fonte="serranegra/dados-inicio.js" hidden></p>
+            <ul class="tags" aria-label="O que tem no Radar Serra Negra">
+              <li>Vereadores</li><li>Propostas</li><li>Seu bairro</li><li>Sessões</li><li>Prefeitura</li>
+            </ul>
+            <span class="go">Abrir o Radar Serra Negra <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="block" id="como-funciona" aria-labelledby="como-t">
+      <p class="eyebrow">Como funciona</p>
+      <h2 id="como-t">Dados públicos, organizados para você</h2>
+      <p class="sub">Sem notas, sem opinião: a mesma régua para todos os vereadores.</p>
+      <ol class="steps">
+        <li>
+          <h3>Coletamos nas fontes oficiais</h3>
+          <p>Sistemas das Câmaras, portais da transparência, TSE e Tribunal de Contas, consultados diariamente.</p>
+        </li>
+        <li>
+          <h3>Organizamos e conferimos</h3>
+          <p>Cada número é conferido com a fonte. Se a coleta falha, o site mantém a última versão validada.</p>
+        </li>
+        <li>
+          <h3>Você acompanha e participa</h3>
+          <p>Compare vereadores, veja o que foi pedido para o seu bairro e registre demandas na Voz do Bairro.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="block" id="compromissos" aria-labelledby="comp-t">
+      <p class="eyebrow">Compromissos</p>
+      <h2 id="comp-t">Regras que valem para todas as cidades</h2>
+      <p class="sub">O Radar mostra fatos registrados pelos órgãos públicos. Quem interpreta é você.</p>
+      <ul class="principios">
+        <li>
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 14l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>Só fontes oficiais</h3>
+          <p>Tudo o que aparece vem de sistemas e portais públicos oficiais. Nada é estimado ou inventado.</p>
+        </li>
+        <li>
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M6 21h12M4 7h16M7 7l-3 6a3 3 0 006 0zM17 7l-3 6a3 3 0 006 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>A mesma régua para todos</h3>
+          <p>Os mesmos critérios valem para todos os vereadores, de qualquer partido.</p>
+        </li>
+        <li>
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+          <h3>Sem notas e sem opinião</h3>
+          <p>Não damos notas nem opinamos sobre vereadores. Os dados ficam organizados para você tirar suas conclusões.</p>
+        </li>
+        <li>
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v10H6zM8.5 11V8a3.5 3.5 0 017 0v3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>Privacidade de quem participa</h3>
+          <p>Na Voz do Bairro, nome, telefone, e-mail, número da casa e CEP de quem envia nunca são publicados.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="convite" id="sua-cidade" aria-labelledby="conv-t">
+      <div>
+        <p class="eyebrow">Sua cidade</p>
+        <h2 id="conv-t">Quer o Radar na sua cidade?</h2>
+        <p class="txt">Estamos levando o Radar para outras cidades. Conte para a gente qual é a sua.</p>
+      </div>
+      <a class="btn-ig" href="https://www.instagram.com/vozdascidadesoficial/" data-goatcounter-click="instagram-convite" data-goatcounter-title="Instagram: Quer o Radar na sua cidade?" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+        <span>Fale com a gente no Instagram<small>@vozdascidadesoficial</small></span>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <div>
+          <a class="brand" href="/" aria-label="Voz das Cidades, página inicial">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="5" fill="#e5322d"/><path d="M8 8a11 11 0 000 16M24 8a11 11 0 010 16" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+            <b>Voz das <span>Cidades</span></b>
+          </a>
+          <p>Projeto independente de transparência das Câmaras Municipais, sem vínculo com Câmaras, Prefeituras ou partidos.</p>
+          <a class="ig-foot" href="https://www.instagram.com/vozdascidadesoficial/" data-goatcounter-click="instagram-rodape" data-goatcounter-title="Instagram: rodapé" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>@vozdascidadesoficial</a>
+        </div>
+        <nav aria-labelledby="rod-cid">
+          <h2 id="rod-cid">Cidades</h2>
+          <ul>
+            <li><a href="/braganca/" data-goatcounter-click="cidade-braganca-rodape" data-goatcounter-title="Bragança: link do rodapé">Bragança Paulista</a></li>
+            <li><a href="/serranegra/" data-goatcounter-click="cidade-serranegra-rodape" data-goatcounter-title="Serra Negra: link do rodapé">Serra Negra</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="rod-proj">
+          <h2 id="rod-proj">O projeto</h2>
+          <ul>
+            <li><a href="#como-funciona">Como funciona</a></li>
+            <li><a href="#compromissos">Compromissos</a></li>
+            <li><a href="#sua-cidade">Radar na sua cidade</a></li>
+            <li><a href="/braganca/sobre/">Sobre o Radar Bragança</a></li>
+            <li><a href="/serranegra/sobre/">Sobre o Radar Serra Negra</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2>Fontes</h2>
+          <ul>
+            <li>Câmaras Municipais</li>
+            <li>Portais da Transparência</li>
+            <li>TCE-SP</li>
+            <li>TSE</li>
+          </ul>
+        </div>
+      </div>
+      <div class="legal">
+        <span>© <span id="ano">2026</span> Voz das Cidades</span>
+        <span>Dados de fontes públicas oficiais, atualizados diariamente.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    var svg = document.getElementById("mapa"), box = svg.parentNode;
+    var txt = document.getElementById("map-txt"), again = document.getElementById("map-again");
+    var leg = document.getElementById("map-leg");
+    var pontos = [].slice.call(document.querySelectorAll("#pins .ponto"));
+    var calmo = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function bb(el, pad) { var b = el.getBBox(); return { x: b.x + b.width / 2, y: b.y + b.height / 2, w: b.width * pad, h: b.height * pad }; }
+    var BR = bb(document.getElementById("ufs"), 1.06);
+    var SP = bb(document.querySelector(".uf-sp"), 1.25);
+    var CID = { x: 2694, y: 2866, w: 140, h: 150 };
+    var cur = BR;
+
+    function aplicar(v) {
+      cur = v;
+      var W = box.clientWidth, H = box.clientHeight, s = Math.min(W / v.w, H / v.h);
+      var vw = W / s, vh = H / s;
+      svg.setAttribute("viewBox", (v.x - vw / 2) + " " + (v.y - vh / 2) + " " + vw + " " + vh);
+      pontos.forEach(function (p) {
+        p.style.left = ((+p.dataset.x - v.x) * s + W / 2) + "px";
+        p.style.top = ((+p.dataset.y - v.y) * s + H / 2) + "px";
+      });
+    }
+    function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function voo(a, b, ms, fim) {
+      var t0 = performance.now();
+      (function passo(now) {
+        var t = Math.min(1, (now - t0) / ms), e = ease(t);
+        var w = a.w * Math.pow(b.w / a.w, e), h = a.h * Math.pow(b.h / a.h, e);
+        aplicar({ x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e, w: w, h: h });
+        if (t < 1) requestAnimationFrame(passo); else if (fim) fim();
+      })(t0);
+    }
+    function mostrar(sim) {
+      pontos.forEach(function (p) { p.classList.toggle("vis", sim); });
+      leg.classList.toggle("vis", sim);
+      svg.classList.toggle("perto", sim);
+    }
+    var rodando = false;
+    function tocar() {
+      if (rodando) return; rodando = true;
+      mostrar(false); again.hidden = true; aplicar(BR); txt.textContent = "Brasil";
+      if (calmo) { aplicar(CID); mostrar(true); txt.textContent = "Interior de São Paulo"; again.hidden = false; rodando = false; return; }
+      setTimeout(function () {
+        txt.textContent = "Estado de São Paulo";
+        voo(BR, SP, 1800, function () {
+          setTimeout(function () {
+            svg.classList.add("perto");
+            voo(SP, CID, 1900, function () {
+              mostrar(true); txt.textContent = "Interior de São Paulo"; again.hidden = false; rodando = false;
+            });
+          }, 500);
+        });
+      }, 1000);
+    }
+    again.addEventListener("click", tocar);
+    window.addEventListener("resize", function () { aplicar(cur); });
+    aplicar(BR);
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); tocar(); } }, { threshold: 0.4 });
+      io.observe(box);
+    } else tocar();
+  })();
+
+  (function () {
+    // Topo: linha de separação só depois de rolar a página.
+    var bar = document.querySelector(".topbar");
+    function rol() { bar.classList.toggle("rolou", window.scrollY > 8); }
+    window.addEventListener("scroll", rol, { passive: true });
+    rol();
+
+    // Contorno de cada município nos cartões, copiado do próprio mapa.
+    var NS = "http://www.w3.org/2000/svg";
+    [].forEach.call(document.querySelectorAll(".shape[data-mun]"), function (el) {
+      var src = document.querySelector("#mapa ." + el.dataset.mun);
+      if (!src) return;
+      var s = document.createElementNS(NS, "svg"), p = document.createElementNS(NS, "path");
+      p.setAttribute("d", src.getAttribute("d"));
+      s.appendChild(p); el.appendChild(s);
+      var b = p.getBBox(), m = Math.max(b.width, b.height) * 0.08;
+      s.setAttribute("viewBox", (b.x - m) + " " + (b.y - m) + " " + (b.width + 2 * m) + " " + (b.height + 2 * m));
+    });
+
+    var ano = document.getElementById("ano");
+    if (ano) ano.textContent = new Date().getFullYear();
+  })();
+
+  (function () {
+    // Números de cada Radar no cartão da cidade, lidos do dados-inicio.js que o robô gera
+    // (window.RB = {...}). Nada fica escrito aqui: se o arquivo não carregar ou vier
+    // diferente do esperado, o cartão aparece sem números.
+    var fila = ["numeros-braganca", "numeros-serranegra"];
+    function proximo() {
+    var id = fila.shift();
+    if (!id) return;
+    var alvo = document.getElementById(id);
+    if (!alvo) { proximo(); return; }
+    window.RB = undefined;
+    var s = document.createElement("script");
+    s.src = alvo.getAttribute("data-fonte");
+    s.async = true;
+    s.onload = function () {
+      try {
+        var RB = window.RB;
+        if (!RB || typeof RB !== "object") return;
+        var partes = [];
+        if (Array.isArray(RB.v) && RB.v.length > 0) partes.push([RB.v.length, RB.v.length === 1 ? "vereador" : "vereadores"]);
+        if (typeof RB.totalPropostas === "number" && isFinite(RB.totalPropostas) && RB.totalPropostas > 0) partes.push([RB.totalPropostas, "propostas"]);
+        var quando = new Date(RB.gerh);
+        if (!partes.length) return;
+        alvo.textContent = "";
+        partes.forEach(function (p) {
+          var span = document.createElement("span"), b = document.createElement("b");
+          b.textContent = p[0].toLocaleString("pt-BR");
+          span.appendChild(b);
+          span.appendChild(document.createTextNode(p[1]));
+          alvo.appendChild(span);
+        });
+        if (!isNaN(quando.getTime())) {
+          var dia = document.createElement("span");
+          dia.textContent = "atualizado em " + quando.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", timeZone: "America/Sao_Paulo" });
+          alvo.appendChild(dia);
+        }
+        alvo.hidden = false;
+      } catch (e) { alvo.hidden = true; }
+      proximo();
+    };
+    s.onerror = proximo;
+    document.body.appendChild(s);
+    }
+    proximo();
+  })();
+  </script>
+  <!-- Contador de visitas GoatCounter (o mesmo do Radar): não usa cookies nem guarda dados pessoais. -->
+  <script data-goatcounter="https://radarbraganca.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

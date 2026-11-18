@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /braganca/v/
+Sitemap: https://vozdascidades.com.br/braganca/sitemap.xml
