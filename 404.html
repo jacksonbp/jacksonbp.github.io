@@ -118,9 +118,8 @@
       dica.hidden = false;
     }
     if (secoesRadar.indexOf(primeira) !== -1) {
-      // Ex.: /vereadores/ → o Radar agora fica em /braganca/vereadores/
-      mostrar("O Radar Bragança agora fica em /braganca/. Esta página provavelmente está aqui:",
-        "/braganca" + caminho + location.search + location.hash, "/braganca" + caminho);
+      mostrar("Esta página pode estar no Radar Bragança:",
+        "https://bragancaterraquerida.com.br" + caminho + location.search + location.hash, caminho);
     } else if (/^serra[-_]?negra/.test(primeira)) {
       mostrar("Procurando Serra Negra?", "/serranegra/", "Abrir o Radar Serra Negra");
     } else if (/^bragan(c|ç|%c3%a7)a/.test(primeira)) {
