@@ -196,38 +196,49 @@
     section.block { padding-top: clamp(48px, 7vw, 80px); scroll-margin-top: 76px; }
     h2 { margin: 6px 0 8px; font: 900 clamp(26px, 4.5vw, 38px)/1.08 var(--display); letter-spacing: -.02em; }
     .sub { margin: 0 0 22px; color: var(--mute); max-width: 60ch; }
-    .cities { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; margin: 0; padding: 0; list-style: none; }
+    .cities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
     .city {
-      display: flex; flex-direction: column; height: 100%;
-      background: var(--card); border: 1px solid var(--hair); border-radius: 22px;
-      padding: clamp(20px, 3vw, 30px); text-decoration: none; color: var(--ink);
-      box-shadow: var(--shadow); transition: transform .15s ease, border-color .15s ease;
+      position: relative; display: flex; flex-direction: column; min-width: 0;
+      padding: clamp(18px, 2.6vw, 28px); color: var(--ink);
+      background: var(--card); border: 1px solid var(--hair); border-radius: 20px;
+      box-shadow: var(--shadow);
     }
-    a.city:hover { transform: translateY(-2px); border-color: var(--red); }
-    .city-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; padding: 5px 11px; border-radius: 999px; white-space: nowrap; }
-    .badge.on { background: var(--ok-t); color: var(--ok); }
-    .badge.on i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-    .badge.soon { background: var(--paper); color: var(--mute); border: 1px solid var(--hair); }
-    .city-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; }
-    .city h3 { margin: 0 0 2px; font: 900 clamp(24px, 3.4vw, 32px)/1.1 var(--display); letter-spacing: -.02em; }
-    .shape { width: 72px; height: 72px; flex: none; }
+    .city-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .city h3 { margin: 0; font: 900 clamp(24px, 3vw, 32px)/1.1 var(--display); letter-spacing: -.025em; }
+    .city-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 7px 0 0; font-size: 13px; color: var(--mute); }
+    .city-status { display: inline-flex; align-items: center; gap: 6px; color: var(--ok); font-weight: 700; }
+    .city-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .shape {
+      width: clamp(48px, 5vw, 64px); aspect-ratio: 1; flex: none; padding: 8px;
+      background: color-mix(in srgb, var(--red) 6%, var(--card)); border-radius: 14px;
+    }
     .shape svg { width: 100%; height: 100%; display: block; overflow: visible; }
-    .shape path { stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
-    .shape.bp path { fill: rgba(229,50,45,.14); stroke: var(--red); }
-    .shape.sn path { fill: rgba(93,105,118,.10); stroke: var(--mute); stroke-dasharray: 3 3; }
-    .stats { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--mute); }
+    .shape path { fill: rgba(229,50,45,.14); stroke: var(--red-ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+    .city .desc { margin: 16px 0 0; color: var(--mute); line-height: 1.5; }
+    .stats {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 8px 22px;
+      margin: 18px 0 0; padding: 14px 0; border-block: 1px solid var(--hair);
+      color: var(--mute); font-size: 13px; line-height: 1.35;
+    }
     .stats[hidden] { display: none; }
-    .stats b { color: var(--ink); font: 900 19px/1 var(--display); letter-spacing: -.01em; margin-right: 4px; }
-    .city .uf { margin: 0; color: var(--mute); font-size: 14px; }
-    .city p.desc { margin: 12px 0 0; color: var(--mute); }
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
-    .tags li { font-size: 13px; font-weight: 600; background: var(--soft); border: 1px solid var(--hair); border-radius: 999px; padding: 5px 11px; }
-    .go { margin-top: auto; padding-top: 22px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--red-ink); }
-    .go span { transition: transform .15s ease; }
-    a.city:hover .go span { transform: translateX(3px); }
-    .city.muted { background: var(--soft); box-shadow: none; border: 1.5px dashed color-mix(in srgb, var(--mute) 40%, transparent); }
-    .city.muted .go { color: var(--mute); }
+    .stats b { display: block; color: var(--ink); font: 900 25px/1.15 var(--display); letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
+    .stats time { font-size: 12px; }
+    .city-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 16px; margin-top: auto; padding-top: 16px; }
+    .city-open, .city-shortcut { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+    .city-open { gap: 10px; padding: 8px 14px; color: var(--paper); background: var(--ink); border-radius: 9px; text-decoration: none; }
+    .city-open::after { content: ""; position: absolute; inset: 0; border-radius: 20px; }
+    .city-shortcut { position: relative; color: var(--red-ink); text-underline-offset: 3px; }
+    .city:focus-within { border-color: var(--red-ink); }
+    @media (hover: hover) {
+      .city:hover { border-color: color-mix(in srgb, var(--red-ink) 55%, var(--hair)); }
+      .city-open:hover { background: var(--red-ink); }
+    }
+    @media (min-width: 761px) {
+      @supports (grid-template-rows: subgrid) {
+        .city { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; }
+        .city-actions { grid-row: 4; }
+      }
+    }
 
     /* como funciona */
     .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 24px; margin: 0; padding: 0; list-style: none; counter-reset: s; }
@@ -364,47 +375,38 @@
     </section>
 
     <section class="block" id="cidades" aria-labelledby="cidades-t">
-      <p class="eyebrow">Cidades</p>
       <h2 id="cidades-t">Escolha sua cidade</h2>
-      <p class="sub">Cada cidade tem o seu Radar, com os vereadores, as propostas e as demandas dos bairros daquele município.</p>
+      <p class="sub">Acompanhe o trabalho da Câmara e os gastos da Prefeitura no seu município.</p>
       <ul class="cities">
-        <li>
-          <a class="city" href="/braganca/" data-goatcounter-click="cidade-braganca-cartao" data-goatcounter-title="Bragança: cartão da cidade">
-            <div class="city-head">
-              <p class="eyebrow">Radar Bragança</p>
-              <span class="badge on"><i aria-hidden="true"></i>No ar</span>
+        <li class="city">
+          <div class="city-head">
+            <div>
+              <h3>Bragança Paulista</h3>
+              <p class="city-meta">São Paulo <span class="city-status">No ar</span></p>
             </div>
-            <div class="city-title">
-              <div><h3>Bragança Paulista</h3><p class="uf">São Paulo</p></div>
-              <span class="shape bp" data-mun="mun-bp" aria-hidden="true"></span>
-            </div>
-            <p class="desc">Propostas, votações e presença de cada vereador, gastos da Prefeitura e a Voz do Bairro para registrar problemas da sua rua.</p>
-            <!-- Números lidos do arquivo que o robô gera todo dia. Se a leitura falhar, continua escondido. -->
-            <p class="stats" id="numeros-braganca" data-fonte="https://bragancaterraquerida.com.br/dados-inicio.js" hidden></p>
-            <ul class="tags" aria-label="O que tem no Radar Bragança">
-              <li>Vereadores</li><li>Propostas</li><li>Seu bairro</li><li>Prefeitura</li><li>Voz do Bairro</li>
-            </ul>
-            <span class="go">Abrir o Radar Bragança <span aria-hidden="true">→</span></span>
-          </a>
+            <span class="shape" data-mun="mun-bp" aria-hidden="true"></span>
+          </div>
+          <p class="desc">Veja como os vereadores votam, acompanhe a presença nas sessões e registre problemas da sua rua.</p>
+          <p class="stats" id="numeros-braganca" data-fonte="https://bragancaterraquerida.com.br/dados-inicio.js" hidden></p>
+          <div class="city-actions">
+            <a class="city-open" href="/braganca/" aria-label="Abrir Radar de Bragança" data-goatcounter-click="cidade-braganca-cartao" data-goatcounter-title="Bragança: cartão da cidade">Abrir Radar <span aria-hidden="true">→</span></a>
+            <a class="city-shortcut" href="https://bragancaterraquerida.com.br/demandas/">Voz do Bairro</a>
+          </div>
         </li>
-        <li>
-          <a class="city" href="/serranegra/" data-goatcounter-click="cidade-serranegra-cartao" data-goatcounter-title="Serra Negra: cartão da cidade">
-            <div class="city-head">
-              <p class="eyebrow">Radar Serra Negra</p>
-              <span class="badge on"><i aria-hidden="true"></i>No ar</span>
+        <li class="city">
+          <div class="city-head">
+            <div>
+              <h3>Serra Negra</h3>
+              <p class="city-meta">São Paulo <span class="city-status">No ar</span></p>
             </div>
-            <div class="city-title">
-              <div><h3>Serra Negra</h3><p class="uf">São Paulo</p></div>
-              <span class="shape sn" data-mun="mun-sn" aria-hidden="true"></span>
-            </div>
-            <p class="desc">Propostas de cada vereador, pautas das sessões, votos de 2024 e gastos da Prefeitura, com os dados oficiais da Câmara Municipal de Serra Negra.</p>
-            <!-- Números lidos do arquivo que o robô gera todo dia. Se a leitura falhar, continua escondido. -->
-            <p class="stats" id="numeros-serranegra" data-fonte="serranegra/dados-inicio.js" hidden></p>
-            <ul class="tags" aria-label="O que tem no Radar Serra Negra">
-              <li>Vereadores</li><li>Propostas</li><li>Seu bairro</li><li>Sessões</li><li>Prefeitura</li>
-            </ul>
-            <span class="go">Abrir o Radar Serra Negra <span aria-hidden="true">→</span></span>
-          </a>
+            <span class="shape" data-mun="mun-sn" aria-hidden="true"></span>
+          </div>
+          <p class="desc">Consulte as pautas da Câmara, os pedidos para cada bairro e os votos que cada vereador recebeu em 2024.</p>
+          <p class="stats" id="numeros-serranegra" data-fonte="serranegra/dados-inicio.js" hidden></p>
+          <div class="city-actions">
+            <a class="city-open" href="/serranegra/" aria-label="Abrir Radar de Serra Negra" data-goatcounter-click="cidade-serranegra-cartao" data-goatcounter-title="Serra Negra: cartão da cidade">Abrir Radar <span aria-hidden="true">→</span></a>
+            <a class="city-shortcut" href="/serranegra/sessoes/">Pautas das sessões</a>
+          </div>
         </li>
       </ul>
     </section>
@@ -622,7 +624,7 @@
         if (!RB || typeof RB !== "object") return;
         var partes = [];
         if (Array.isArray(RB.v) && RB.v.length > 0) partes.push([RB.v.length, RB.v.length === 1 ? "vereador" : "vereadores"]);
-        if (typeof RB.totalPropostas === "number" && isFinite(RB.totalPropostas) && RB.totalPropostas > 0) partes.push([RB.totalPropostas, "propostas"]);
+        if (typeof RB.totalPropostas === "number" && isFinite(RB.totalPropostas) && RB.totalPropostas > 0) partes.push([RB.totalPropostas, RB.totalPropostas === 1 ? "proposta" : "propostas"]);
         var quando = new Date(RB.gerh);
         if (!partes.length) return;
         alvo.textContent = "";
@@ -633,14 +635,18 @@
           span.appendChild(document.createTextNode(p[1]));
           alvo.appendChild(span);
         });
-        if (!isNaN(quando.getTime())) {
-          var dia = document.createElement("span");
-          dia.textContent = "atualizado em " + quando.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", timeZone: "America/Sao_Paulo" });
+        if (RB.gerh != null && !isNaN(quando.getTime())) {
+          var dia = document.createElement("time");
+          dia.dateTime = quando.toISOString();
+          dia.textContent = "Atualizado em " + quando.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", timeZone: "America/Sao_Paulo" });
           alvo.appendChild(dia);
         }
         alvo.hidden = false;
-      } catch (e) { alvo.hidden = true; }
-      proximo();
+      } catch (e) {
+        alvo.hidden = true;
+      } finally {
+        proximo();
+      }
     };
     s.onerror = proximo;
     document.body.appendChild(s);
